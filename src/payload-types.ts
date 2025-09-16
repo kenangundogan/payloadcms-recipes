@@ -69,6 +69,20 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
+    categories: Category;
+    recipes: Recipe;
+    ingredients: Ingredient;
+    ingredientUnits: IngredientUnit;
+    cookingMethods: CookingMethod;
+    cuisines: Cuisine;
+    difficultyLevels: DifficultyLevel;
+    seasons: Season;
+    dietaryTypes: DietaryType;
+    ingredientCategories: IngredientCategory;
+    continents: Continent;
+    countries: Country;
+    regions: Region;
+    cities: City;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -77,6 +91,20 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    categories: CategoriesSelect<false> | CategoriesSelect<true>;
+    recipes: RecipesSelect<false> | RecipesSelect<true>;
+    ingredients: IngredientsSelect<false> | IngredientsSelect<true>;
+    ingredientUnits: IngredientUnitsSelect<false> | IngredientUnitsSelect<true>;
+    cookingMethods: CookingMethodsSelect<false> | CookingMethodsSelect<true>;
+    cuisines: CuisinesSelect<false> | CuisinesSelect<true>;
+    difficultyLevels: DifficultyLevelsSelect<false> | DifficultyLevelsSelect<true>;
+    seasons: SeasonsSelect<false> | SeasonsSelect<true>;
+    dietaryTypes: DietaryTypesSelect<false> | DietaryTypesSelect<true>;
+    ingredientCategories: IngredientCategoriesSelect<false> | IngredientCategoriesSelect<true>;
+    continents: ContinentsSelect<false> | ContinentsSelect<true>;
+    countries: CountriesSelect<false> | CountriesSelect<true>;
+    regions: RegionsSelect<false> | RegionsSelect<true>;
+    cities: CitiesSelect<false> | CitiesSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -119,6 +147,10 @@ export interface UserAuthOperations {
  */
 export interface User {
   id: string;
+  username: string;
+  firstname?: string | null;
+  lastname?: string | null;
+  role: 'admin' | 'editor' | 'viewer';
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -143,7 +175,14 @@ export interface User {
  */
 export interface Media {
   id: string;
-  alt: string;
+  /**
+   * Yüklenecek görselin aspect ratio'sunu seçin
+   */
+  aspectRatio: '16x9' | '1x1' | '1x2';
+  /**
+   * Görsel için açıklama metni (kullanıcılara gösterilir)
+   */
+  alt?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -155,6 +194,1943 @@ export interface Media {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
+  sizes?: {};
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories".
+ */
+export interface Category {
+  id: string;
+  /**
+   * Kategorinin görünür adı
+   */
+  name: string;
+  /**
+   * Kategorinin açıklaması (SEO için önemli)
+   */
+  description?: string | null;
+  /**
+   * Bu kategori bir alt kategori ise üst kategorisini seçin
+   */
+  parent?: (string | null) | Category;
+  /**
+   * Yatay görsel (1920x1080) - Hero, banner kullanımı için
+   */
+  image16x9?: (string | null) | Media;
+  /**
+   * Kare görsel (1080x1080) - Kart, grid kullanımı için (zorunlu)
+   */
+  image1x1: string | Media;
+  /**
+   * Dikey görsel (1080x2160) - Mobile, story kullanımı için
+   */
+  image1x2?: (string | null) | Media;
+  /**
+   * Kategori için küçük ikon görsel (menülerde kullanılır)
+   */
+  icon?: (string | null) | Media;
+  /**
+   * Kategori için tema rengi (hex kod)
+   */
+  color?: string | null;
+  /**
+   * Kategori ile ilgili ek görseller
+   */
+  gallery?:
+    | {
+        image: string | Media;
+        caption?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * URL'de kullanılacak benzersiz kimlik
+   */
+  slug?: string | null;
+  /**
+   * Kategorilerin sıralanma düzeni (düşük sayılar önce görünür)
+   */
+  sortOrder?: number | null;
+  /**
+   * Kategorinin sitede görünür olup olmayacağı
+   */
+  isActive?: boolean | null;
+  /**
+   * Ana sayfada öne çıkarılsın mı?
+   */
+  isFeatured?: boolean | null;
+  /**
+   * Bu kategorideki toplam tarif sayısı (otomatik hesaplanır)
+   */
+  recipeCount?: number | null;
+  /**
+   * Sadece yöneticiler için notlar (kullanıcılara görünmez)
+   */
+  adminNotes?: string | null;
+  /**
+   * Arama motorlarında görünecek başlık (60 karakter)
+   */
+  seoTitle?: string | null;
+  /**
+   * Arama motorlarında görünecek açıklama (160 karakter)
+   */
+  seoDescription?: string | null;
+  /**
+   * Arama motorları için anahtar kelimeler
+   */
+  seoKeywords?:
+    | {
+        keyword?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Sosyal medyada paylaşılırken kullanılacak görsel
+   */
+  seoImage?: (string | null) | Media;
+  /**
+   * Bu sayfa için canonical URL (opsiyonel)
+   */
+  canonicalUrl?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "recipes".
+ */
+export interface Recipe {
+  id: string;
+  /**
+   * Tarifin ana başlığı
+   */
+  title: string;
+  /**
+   * Tarifin özet açıklaması (arama sonuçlarında görünür)
+   */
+  description: string;
+  /**
+   * Tarifin ait olduğu ana kategori
+   */
+  category: string | Category;
+  /**
+   * Tarif için etiketler (vegetarian, glutensiz, vs.)
+   */
+  tags?:
+    | {
+        tag?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Yatay görsel (1920x1080) - Hero, banner kullanımı için
+   */
+  image16x9?: (string | null) | Media;
+  /**
+   * Kare görsel (1080x1080) - Kart, grid kullanımı için (zorunlu)
+   */
+  image1x1: string | Media;
+  /**
+   * Dikey görsel (1080x2160) - Mobile, story kullanımı için
+   */
+  image1x2?: (string | null) | Media;
+  /**
+   * Tarif için ek görseller (adım adım fotoğraflar, vs.)
+   */
+  gallery?:
+    | {
+        image: string | Media;
+        caption?: string | null;
+        /**
+         * Bu görsel pişirme adımlarından biri mi?
+         */
+        isStepImage?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * YouTube, Vimeo veya diğer video platformu linki
+   */
+  videoUrl?: string | null;
+  /**
+   * Video için özel küçük resim (opsiyonel)
+   */
+  thumbnailImage?: (string | null) | Media;
+  /**
+   * Bu tarif kaç kişi için?
+   */
+  servings: number;
+  /**
+   * Hazırlık süresi
+   */
+  prepTime: number;
+  /**
+   * Pişirme süresi
+   */
+  cookingTime: number;
+  /**
+   * Otomatik hesaplanır
+   */
+  totalTime?: number | null;
+  /**
+   * Tarifin zorluk derecesi
+   */
+  difficulty: string | DifficultyLevel;
+  /**
+   * Hangi mutfağa ait?
+   */
+  cuisine?: (string | null) | Cuisine;
+  /**
+   * Ana pişirme yöntemi
+   */
+  cookingMethod?: (string | null) | CookingMethod;
+  /**
+   * Hangi mevsimde ideal?
+   */
+  season?: (string | null) | Season;
+  /**
+   * Özel diyet gereksinimlerine uygunluk
+   */
+  dietaryInfo?:
+    | {
+        diet?: (string | null) | DietaryType;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Tarif için gerekli tüm malzemeler
+   */
+  ingredients: {
+    /**
+     * Listeden malzeme seçin veya yeni ekleyin
+     */
+    ingredient: string | Ingredient;
+    amount: string;
+    unit: string | IngredientUnit;
+    notes?: string | null;
+    /**
+     * Bu malzeme opsiyonel mi?
+     */
+    isOptional?: boolean | null;
+    /**
+     * Malzeme gruplama için
+     */
+    category?: (string | null) | IngredientCategory;
+    id?: string | null;
+  }[];
+  /**
+   * Tarifin adım adım hazırlanışı
+   */
+  instructions: {
+    /**
+     * Bu adımda yapılacakları detaylı şekilde açıklayın
+     */
+    step: {
+      root: {
+        type: string;
+        children: {
+          type: string;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    };
+    /**
+     * Bu adım için görsel (opsiyonel)
+     */
+    image?: (string | null) | Media;
+    /**
+     * Bu adımın süresi (opsiyonel)
+     */
+    duration?: number | null;
+    /**
+     * Fırın sıcaklığı vs. (opsiyonel)
+     */
+    temperature?: number | null;
+    /**
+     * Bu adım için öneriler ve ipuçları
+     */
+    tips?: string | null;
+    id?: string | null;
+  }[];
+  /**
+   * Genel ipuçları, alternatifler ve öneriler
+   */
+  chefsTips?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Besin değerleri bilgileri (opsiyonel)
+   */
+  nutrition?: {
+    /**
+     * Kalori (kcal)
+     */
+    calories?: number | null;
+    protein?: number | null;
+    carbs?: number | null;
+    fat?: number | null;
+    fiber?: number | null;
+    sugar?: number | null;
+    sodium?: number | null;
+    cholesterol?: number | null;
+  };
+  /**
+   * Arama motorlarında görünecek başlık (60 karakter)
+   */
+  seoTitle?: string | null;
+  /**
+   * Arama motorlarında görünecek açıklama (160 karakter)
+   */
+  seoDescription?: string | null;
+  /**
+   * Arama motorları için anahtar kelimeler
+   */
+  seoKeywords?:
+    | {
+        keyword?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Sosyal medyada paylaşılırken kullanılacak görsel
+   */
+  seoImage?: (string | null) | Media;
+  /**
+   * URL'de kullanılacak benzersiz kimlik
+   */
+  slug?: string | null;
+  /**
+   * Tarifin yayın durumu
+   */
+  status: 'draft' | 'published' | 'archived';
+  /**
+   * Ana sayfada öne çıkarılsın mı?
+   */
+  featured?: boolean | null;
+  /**
+   * Kullanıcılar yorum yapabilsin mi?
+   */
+  allowComments?: boolean | null;
+  /**
+   * Kullanıcılar puan verebilsin mi?
+   */
+  allowRating?: boolean | null;
+  /**
+   * Tarifin yayınlanma tarihi
+   */
+  publishedAt?: string | null;
+  /**
+   * Tarifi yazan kişi
+   */
+  author?: (string | null) | User;
+  /**
+   * Sadece editörler için notlar (kullanıcılara görünmez)
+   */
+  notes?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "difficultyLevels".
+ */
+export interface DifficultyLevel {
+  id: string;
+  /**
+   * Zorluk seviyesinin adı
+   */
+  name: string;
+  /**
+   * 1-10 arası zorluk derecesi (1 en kolay, 10 en zor)
+   */
+  level: number;
+  /**
+   * Bu zorluk seviyesi hakkında açıklama
+   */
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Bu seviye için gerekli beceriler ve deneyim
+   */
+  skillRequired?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Bu zorluk için tahmini süre aralığı
+   */
+  estimatedTime?: {
+    min?: number | null;
+    max?: number | null;
+  };
+  /**
+   * Bu seviye için gerekli ön koşullar
+   */
+  prerequisites?:
+    | {
+        prerequisite?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Zorluk seviyesini temsil eden ana görsel
+   */
+  featuredImage?: (string | null) | Media;
+  /**
+   * Zorluk seviyesi için ikon
+   */
+  icon?: (string | null) | Media;
+  /**
+   * UI'da gösterilecek renk (hex kod)
+   */
+  color?: string | null;
+  /**
+   * Bu seviyeyi başaran kullanıcılar için rozet
+   */
+  badge?: (string | null) | Media;
+  /**
+   * Listeleme sırası (düşük sayılar önce görünür)
+   */
+  sortOrder?: number | null;
+  /**
+   * Aktif seviyeler tariflerde kullanılabilir
+   */
+  isActive?: boolean | null;
+  /**
+   * Bu seviye kullanıcılara görünür mü?
+   */
+  isVisible?: boolean | null;
+  /**
+   * Bu zorluk seviyesi hangi grup için uygun?
+   */
+  recommendedFor?: ('beginners' | 'intermediate' | 'advanced' | 'professionals') | null;
+  /**
+   * Sadece yöneticiler için notlar (kullanıcılara görünmez)
+   */
+  adminNotes?: string | null;
+  /**
+   * Arama motorlarında görünecek başlık (60 karakter)
+   */
+  seoTitle?: string | null;
+  /**
+   * Arama motorlarında görünecek açıklama (160 karakter)
+   */
+  seoDescription?: string | null;
+  /**
+   * Arama motorları için anahtar kelimeler
+   */
+  seoKeywords?:
+    | {
+        keyword?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Sosyal medyada paylaşılırken kullanılacak görsel
+   */
+  seoImage?: (string | null) | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "cuisines".
+ */
+export interface Cuisine {
+  id: string;
+  /**
+   * Mutfağın adı
+   */
+  name: string;
+  /**
+   * Bu mutfak hakkında detaylı açıklama
+   */
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Bu mutfağın coğrafi yayılımı ve kökenleri
+   */
+  geographicScope?: {
+    /**
+     * Bu mutfağın ana kıtası (opsiyonel)
+     */
+    continent?: (string | null) | Continent;
+    /**
+     * Bu mutfağın yaygın olduğu ülkeler
+     */
+    countries?: (string | Country)[] | null;
+    /**
+     * Bu mutfağın özgün olduğu bölgeler
+     */
+    regions?: (string | Region)[] | null;
+    /**
+     * Bu mutfağın karakteristiğini aldığı şehirler
+     */
+    cities?: (string | City)[] | null;
+  };
+  /**
+   * Bu mutfağın ana kimliğini belirleyen coğrafi lokasyon
+   */
+  primaryLocation: {
+    /**
+     * Bu mutfağın en spesifik lokasyon seviyesi
+     */
+    type: 'continent' | 'country' | 'region' | 'city';
+    /**
+     * Ana kıta seçimi
+     */
+    continent?: (string | null) | Continent;
+    /**
+     * Ana ülke seçimi
+     */
+    country?: (string | null) | Country;
+    /**
+     * Ana bölge seçimi
+     */
+    region?: (string | null) | Region;
+    /**
+     * Ana şehir seçimi
+     */
+    city?: (string | null) | City;
+  };
+  /**
+   * Bu mutfağın karakteristik özellikleri
+   */
+  characteristics?:
+    | {
+        characteristic?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Bu mutfakta sık kullanılan malzemeler
+   */
+  popularIngredients?:
+    | {
+        ingredient?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Yatay görsel (1920x1080) - Hero, banner kullanımı için
+   */
+  image16x9?: (string | null) | Media;
+  /**
+   * Kare görsel (1080x1080) - Kart, grid kullanımı için (zorunlu)
+   */
+  image1x1: string | Media;
+  /**
+   * Dikey görsel (1080x2160) - Mobile, story kullanımı için
+   */
+  image1x2?: (string | null) | Media;
+  /**
+   * Mutfak için ikon
+   */
+  icon?: (string | null) | Media;
+  /**
+   * Ülke bayrağı veya mutfak simgesi
+   */
+  flag?: (string | null) | Media;
+  /**
+   * Mutfak için tema rengi (hex kod)
+   */
+  color?: string | null;
+  /**
+   * Mutfak ile ilgili ek görseller
+   */
+  gallery?:
+    | {
+        image: string | Media;
+        caption?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * URL için benzersiz kimlik
+   */
+  slug?: string | null;
+  /**
+   * Listeleme sırası (düşük sayılar önce görünür)
+   */
+  sortOrder?: number | null;
+  /**
+   * Aktif mutfaklar tariflerde kullanılabilir
+   */
+  isActive?: boolean | null;
+  /**
+   * Ana sayfada öne çıkarılsın mı?
+   */
+  isFeatured?: boolean | null;
+  /**
+   * Sadece yöneticiler için notlar (kullanıcılara görünmez)
+   */
+  adminNotes?: string | null;
+  /**
+   * Arama motorlarında görünecek başlık (60 karakter)
+   */
+  seoTitle?: string | null;
+  /**
+   * Arama motorlarında görünecek açıklama (160 karakter)
+   */
+  seoDescription?: string | null;
+  /**
+   * Arama motorları için anahtar kelimeler
+   */
+  seoKeywords?:
+    | {
+        keyword?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Sosyal medyada paylaşılırken kullanılacak görsel
+   */
+  seoImage?: (string | null) | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "continents".
+ */
+export interface Continent {
+  id: string;
+  /**
+   * Kıtanın tam adı
+   */
+  name: string;
+  /**
+   * Kıta için 2-3 harflik kod
+   */
+  code: string;
+  /**
+   * Bu kıta hakkında genel bilgiler
+   */
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Yatay görsel (1920x1080) - Hero, banner kullanımı için
+   */
+  image16x9?: (string | null) | Media;
+  /**
+   * Kare görsel (1080x1080) - Kart, grid kullanımı için (zorunlu)
+   */
+  image1x1: string | Media;
+  /**
+   * Dikey görsel (1080x2160) - Mobile, story kullanımı için
+   */
+  image1x2?: (string | null) | Media;
+  /**
+   * Kıta için ikon
+   */
+  icon?: (string | null) | Media;
+  /**
+   * Kıta için tema rengi (hex kod)
+   */
+  color?: string | null;
+  /**
+   * URL için benzersiz kimlik
+   */
+  slug?: string | null;
+  /**
+   * Listeleme sırası (düşük sayılar önce görünür)
+   */
+  sortOrder?: number | null;
+  /**
+   * Aktif kıtalar sistemde kullanılabilir
+   */
+  isActive?: boolean | null;
+  /**
+   * Bu kıtadaki ülke sayısı (otomatik hesaplanır)
+   */
+  countryCount?: number | null;
+  /**
+   * Sadece yöneticiler için notlar (kullanıcılara görünmez)
+   */
+  adminNotes?: string | null;
+  /**
+   * Arama motorlarında görünecek başlık (60 karakter)
+   */
+  seoTitle?: string | null;
+  /**
+   * Arama motorlarında görünecek açıklama (160 karakter)
+   */
+  seoDescription?: string | null;
+  /**
+   * Arama motorları için anahtar kelimeler
+   */
+  seoKeywords?:
+    | {
+        keyword?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Sosyal medyada paylaşılırken kullanılacak görsel
+   */
+  seoImage?: (string | null) | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "countries".
+ */
+export interface Country {
+  id: string;
+  /**
+   * Ülkenin tam adı
+   */
+  name: string;
+  /**
+   * ISO 3166-1 alfa-2 ülke kodu
+   */
+  code: string;
+  /**
+   * Bu ülkenin bulunduğu kıta
+   */
+  continent: string | Continent;
+  /**
+   * Ülkenin başkenti
+   */
+  capital: string;
+  /**
+   * Bu ülke hakkında genel bilgiler
+   */
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Yatay görsel (1920x1080) - Hero, banner kullanımı için
+   */
+  image16x9?: (string | null) | Media;
+  /**
+   * Kare görsel (1080x1080) - Kart, grid kullanımı için (zorunlu)
+   */
+  image1x1: string | Media;
+  /**
+   * Dikey görsel (1080x2160) - Mobile, story kullanımı için
+   */
+  image1x2?: (string | null) | Media;
+  /**
+   * Ülkenin bayrağı
+   */
+  flag?: (string | null) | Media;
+  /**
+   * Ülke için ikon
+   */
+  icon?: (string | null) | Media;
+  /**
+   * Ülke için tema rengi (hex kod)
+   */
+  color?: string | null;
+  /**
+   * Ülke ile ilgili görseller
+   */
+  gallery?:
+    | {
+        image: string | Media;
+        caption?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * URL için benzersiz kimlik
+   */
+  slug?: string | null;
+  /**
+   * Listeleme sırası (düşük sayılar önce görünür)
+   */
+  sortOrder?: number | null;
+  /**
+   * Aktif ülkeler sistemde kullanılabilir
+   */
+  isActive?: boolean | null;
+  /**
+   * Bu ülke bağımsız bir devlet mi?
+   */
+  isIndependent?: boolean | null;
+  /**
+   * Bu ülkedeki bölge sayısı (otomatik hesaplanır)
+   */
+  regionCount?: number | null;
+  /**
+   * Sadece yöneticiler için notlar (kullanıcılara görünmez)
+   */
+  adminNotes?: string | null;
+  /**
+   * Arama motorlarında görünecek başlık (60 karakter)
+   */
+  seoTitle?: string | null;
+  /**
+   * Arama motorlarında görünecek açıklama (160 karakter)
+   */
+  seoDescription?: string | null;
+  /**
+   * Arama motorları için anahtar kelimeler
+   */
+  seoKeywords?:
+    | {
+        keyword?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Sosyal medyada paylaşılırken kullanılacak görsel
+   */
+  seoImage?: (string | null) | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "regions".
+ */
+export interface Region {
+  id: string;
+  /**
+   * Bölgenin tam adı
+   */
+  name: string;
+  /**
+   * Bu bölgenin ait olduğu ülke
+   */
+  country: string | Country;
+  /**
+   * Bu bölgenin kategorisi
+   */
+  type: 'geographic' | 'administrative' | 'cultural' | 'economic';
+  /**
+   * Bu bölge hakkında detaylı bilgiler
+   */
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Bölgenin merkez şehri (varsa)
+   */
+  capital?: string | null;
+  /**
+   * Bölgenin karakteristik özellikleri
+   */
+  characteristics?:
+    | {
+        characteristic?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Bölgenin hakim iklim türü
+   */
+  climate?: ('mediterranean' | 'continental' | 'oceanic' | 'tropical' | 'desert' | 'polar') | null;
+  /**
+   * Yatay görsel (1920x1080) - Hero, banner kullanımı için
+   */
+  image16x9?: (string | null) | Media;
+  /**
+   * Kare görsel (1080x1080) - Kart, grid kullanımı için (zorunlu)
+   */
+  image1x1: string | Media;
+  /**
+   * Dikey görsel (1080x2160) - Mobile, story kullanımı için
+   */
+  image1x2?: (string | null) | Media;
+  /**
+   * Bölge için ikon
+   */
+  icon?: (string | null) | Media;
+  /**
+   * Bölge için tema rengi (hex kod)
+   */
+  color?: string | null;
+  /**
+   * Bölge ile ilgili ek görseller
+   */
+  gallery?:
+    | {
+        image: string | Media;
+        caption?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * URL için benzersiz kimlik
+   */
+  slug?: string | null;
+  /**
+   * Listeleme sırası (düşük sayılar önce görünür)
+   */
+  sortOrder?: number | null;
+  /**
+   * Aktif bölgeler sistemde kullanılabilir
+   */
+  isActive?: boolean | null;
+  /**
+   * Bu bölge popüler bir turist destinasyonu mu?
+   */
+  isTouristDestination?: boolean | null;
+  /**
+   * Bu bölgedeki şehir sayısı (otomatik hesaplanır)
+   */
+  cityCount?: number | null;
+  /**
+   * Bölgenin ana ekonomik faaliyeti
+   */
+  economicActivity?: ('agriculture' | 'tourism' | 'industry' | 'services' | 'fishing' | 'mining') | null;
+  /**
+   * Sadece yöneticiler için notlar (kullanıcılara görünmez)
+   */
+  adminNotes?: string | null;
+  /**
+   * Arama motorlarında görünecek başlık (60 karakter)
+   */
+  seoTitle?: string | null;
+  /**
+   * Arama motorlarında görünecek açıklama (160 karakter)
+   */
+  seoDescription?: string | null;
+  /**
+   * Arama motorları için anahtar kelimeler
+   */
+  seoKeywords?:
+    | {
+        keyword?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Sosyal medyada paylaşılırken kullanılacak görsel
+   */
+  seoImage?: (string | null) | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "cities".
+ */
+export interface City {
+  id: string;
+  /**
+   * Şehrin tam adı
+   */
+  name: string;
+  /**
+   * Bu şehrin ait olduğu ülke
+   */
+  country: string | Country;
+  /**
+   * Bu şehrin ait olduğu bölge (opsiyonel)
+   */
+  region?: (string | null) | Region;
+  /**
+   * Bu şehir hakkında detaylı bilgiler
+   */
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Şehrin GPS koordinatları
+   */
+  coordinates?: {
+    latitude?: number | null;
+    longitude?: number | null;
+  };
+  /**
+   * Yatay görsel (1920x1080) - Hero, banner kullanımı için
+   */
+  image16x9?: (string | null) | Media;
+  /**
+   * Kare görsel (1080x1080) - Kart, grid kullanımı için (zorunlu)
+   */
+  image1x1: string | Media;
+  /**
+   * Dikey görsel (1080x2160) - Mobile, story kullanımı için
+   */
+  image1x2?: (string | null) | Media;
+  /**
+   * Şehrin silüet/panorama görseli
+   */
+  skylineImage?: (string | null) | Media;
+  /**
+   * Şehir için ikon
+   */
+  icon?: (string | null) | Media;
+  /**
+   * Şehir için tema rengi (hex kod)
+   */
+  color?: string | null;
+  /**
+   * Şehir ile ilgili ek görseller
+   */
+  gallery?:
+    | {
+        image: string | Media;
+        caption?: string | null;
+        location?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * URL için benzersiz kimlik
+   */
+  slug?: string | null;
+  /**
+   * Listeleme sırası (düşük sayılar önce görünür)
+   */
+  sortOrder?: number | null;
+  /**
+   * Aktif şehirler sistemde kullanılabilir
+   */
+  isActive?: boolean | null;
+  /**
+   * Bu şehir ülkenin başkenti mi?
+   */
+  isCapital?: boolean | null;
+  /**
+   * Bu şehir büyük bir metropol mü?
+   */
+  isMajorCity?: boolean | null;
+  /**
+   * Bu şehir popüler bir turist destinasyonu mu?
+   */
+  isTouristDestination?: boolean | null;
+  /**
+   * Şehrin ana ekonomik faaliyeti
+   */
+  economicActivity?:
+    | ('commerce' | 'tourism' | 'industry' | 'services' | 'agriculture' | 'fishing' | 'technology' | 'finance')
+    | null;
+  /**
+   * Sadece yöneticiler için notlar (kullanıcılara görünmez)
+   */
+  adminNotes?: string | null;
+  /**
+   * Arama motorlarında görünecek başlık (60 karakter)
+   */
+  seoTitle?: string | null;
+  /**
+   * Arama motorlarında görünecek açıklama (160 karakter)
+   */
+  seoDescription?: string | null;
+  /**
+   * Arama motorları için anahtar kelimeler
+   */
+  seoKeywords?:
+    | {
+        keyword?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Sosyal medyada paylaşılırken kullanılacak görsel
+   */
+  seoImage?: (string | null) | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "cookingMethods".
+ */
+export interface CookingMethod {
+  id: string;
+  /**
+   * Pişirme yönteminin adı
+   */
+  name: string;
+  /**
+   * Bu pişirme yöntemi hakkında detaylı açıklama
+   */
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Pişirme yönteminin kategorisi
+   */
+  category?: ('hot-cooking' | 'cold-preparation' | 'mixed-method') | null;
+  /**
+   * Bu yöntem için ortalama pişirme süresi
+   */
+  averageTime?: number | null;
+  /**
+   * Bu yöntem için önerilen sıcaklık aralığı
+   */
+  temperature?: {
+    min?: number | null;
+    max?: number | null;
+  };
+  /**
+   * Bu yöntem için gerekli araç gereçler
+   */
+  equipment?:
+    | {
+        item?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Bu pişirme yöntemi için öneriler ve ipuçları
+   */
+  tips?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Pişirme yöntemini temsil eden ana görsel
+   */
+  featuredImage?: (string | null) | Media;
+  /**
+   * Pişirme yöntemi için ikon
+   */
+  icon?: (string | null) | Media;
+  /**
+   * Bu pişirme yöntemini gösteren video URL'si
+   */
+  instructionalVideo?: string | null;
+  /**
+   * Pişirme yöntemi ile ilgili ek görseller
+   */
+  gallery?:
+    | {
+        image: string | Media;
+        caption?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * URL için benzersiz kimlik
+   */
+  slug?: string | null;
+  /**
+   * Listeleme sırası (düşük sayılar önce görünür)
+   */
+  sortOrder?: number | null;
+  /**
+   * Aktif yöntemler tariflerde kullanılabilir
+   */
+  isActive?: boolean | null;
+  /**
+   * Ana sayfada öne çıkarılsın mı?
+   */
+  isFeatured?: boolean | null;
+  /**
+   * Bu yöntem için gereken minimum zorluk seviyesi
+   */
+  difficultyRequired?: (string | null) | DifficultyLevel;
+  /**
+   * Sadece yöneticiler için notlar (kullanıcılara görünmez)
+   */
+  adminNotes?: string | null;
+  /**
+   * Arama motorlarında görünecek başlık (60 karakter)
+   */
+  seoTitle?: string | null;
+  /**
+   * Arama motorlarında görünecek açıklama (160 karakter)
+   */
+  seoDescription?: string | null;
+  /**
+   * Arama motorları için anahtar kelimeler
+   */
+  seoKeywords?:
+    | {
+        keyword?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Sosyal medyada paylaşılırken kullanılacak görsel
+   */
+  seoImage?: (string | null) | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "seasons".
+ */
+export interface Season {
+  id: string;
+  /**
+   * Mevsimin adı
+   */
+  name: string;
+  /**
+   * Bu mevsim hakkında açıklama
+   */
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Bu mevsime ait aylar
+   */
+  months?:
+    | {
+        month?:
+          | (
+              | 'january'
+              | 'february'
+              | 'march'
+              | 'april'
+              | 'may'
+              | 'june'
+              | 'july'
+              | 'august'
+              | 'september'
+              | 'october'
+              | 'november'
+              | 'december'
+            )
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Mevsimin karakteristik özellikleri
+   */
+  characteristics?:
+    | {
+        characteristic?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Bu mevsimde taze olan malzemeler
+   */
+  popularIngredients?:
+    | {
+        ingredient?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Bu mevsim için özel pişirme önerileri
+   */
+  cookingTips?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Mevsimi temsil eden ana görsel
+   */
+  featuredImage?: (string | null) | Media;
+  /**
+   * Mevsim için ikon
+   */
+  icon?: (string | null) | Media;
+  /**
+   * Mevsim için tema rengi (hex kod)
+   */
+  color?: string | null;
+  /**
+   * Mevsim sayfası için arkaplan görseli
+   */
+  backgroundImage?: (string | null) | Media;
+  /**
+   * Mevsim ile ilgili ek görseller
+   */
+  gallery?:
+    | {
+        image: string | Media;
+        caption?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * URL için benzersiz kimlik
+   */
+  slug?: string | null;
+  /**
+   * Listeleme sırası (düşük sayılar önce görünür)
+   */
+  sortOrder?: number | null;
+  /**
+   * Aktif mevsimler tariflerde kullanılabilir
+   */
+  isActive?: boolean | null;
+  /**
+   * Bu mevsim şu an mı? (Ana sayfada vurgulanır)
+   */
+  isCurrent?: boolean | null;
+  /**
+   * Bu mevsimin genel sıcaklık aralığı
+   */
+  temperatureRange?: {
+    min?: number | null;
+    max?: number | null;
+  };
+  /**
+   * Sadece yöneticiler için notlar (kullanıcılara görünmez)
+   */
+  adminNotes?: string | null;
+  /**
+   * Arama motorlarında görünecek başlık (60 karakter)
+   */
+  seoTitle?: string | null;
+  /**
+   * Arama motorlarında görünecek açıklama (160 karakter)
+   */
+  seoDescription?: string | null;
+  /**
+   * Arama motorları için anahtar kelimeler
+   */
+  seoKeywords?:
+    | {
+        keyword?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Sosyal medyada paylaşılırken kullanılacak görsel
+   */
+  seoImage?: (string | null) | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "dietaryTypes".
+ */
+export interface DietaryType {
+  id: string;
+  /**
+   * Diyet türünün adı
+   */
+  name: string;
+  /**
+   * Bu diyet türü hakkında detaylı açıklama
+   */
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Diyet türünün kategorisi
+   */
+  category?:
+    | ('dietary-restriction' | 'health-diet' | 'lifestyle' | 'allergy-intolerance' | 'religious-cultural')
+    | null;
+  /**
+   * Bu diyette kullanılabilen malzemeler
+   */
+  allowedIngredients?:
+    | {
+        ingredient?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Bu diyette kullanılamayan malzemeler
+   */
+  forbiddenIngredients?:
+    | {
+        ingredient?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Bu diyetin potansiyel faydaları
+   */
+  benefits?:
+    | {
+        benefit?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Bu diyet sağlık nedeniyle mi yapılır?
+   */
+  isHealthBased?: boolean | null;
+  /**
+   * Bu diyet alerji/intolerans nedeniyle mi?
+   */
+  isAllergyBased?: boolean | null;
+  /**
+   * Diyet türünü temsil eden ana görsel
+   */
+  featuredImage?: (string | null) | Media;
+  /**
+   * Diyet türü için ikon
+   */
+  icon?: (string | null) | Media;
+  /**
+   * UI'da kullanılacak renk (hex kod)
+   */
+  color?: string | null;
+  /**
+   * Diyet türü ile ilgili ek görseller
+   */
+  gallery?:
+    | {
+        image: string | Media;
+        caption?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * URL için benzersiz kimlik
+   */
+  slug?: string | null;
+  /**
+   * Listeleme sırası (düşük sayılar önce görünür)
+   */
+  sortOrder?: number | null;
+  /**
+   * Aktif diyet türleri tariflerde kullanılabilir
+   */
+  isActive?: boolean | null;
+  /**
+   * Ana sayfada öne çıkarılsın mı?
+   */
+  isFeatured?: boolean | null;
+  /**
+   * Sadece yöneticiler için notlar (kullanıcılara görünmez)
+   */
+  adminNotes?: string | null;
+  /**
+   * Arama motorlarında görünecek başlık (60 karakter)
+   */
+  seoTitle?: string | null;
+  /**
+   * Arama motorlarında görünecek açıklama (160 karakter)
+   */
+  seoDescription?: string | null;
+  /**
+   * Arama motorları için anahtar kelimeler
+   */
+  seoKeywords?:
+    | {
+        keyword?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Sosyal medyada paylaşılırken kullanılacak görsel
+   */
+  seoImage?: (string | null) | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ingredients".
+ */
+export interface Ingredient {
+  id: string;
+  /**
+   * Malzemenin tam adı
+   */
+  name: string;
+  /**
+   * Bu malzeme hakkında detaylı açıklama
+   */
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Malzemenin ait olduğu kategori
+   */
+  category: string | IngredientCategory;
+  /**
+   * Bu malzeme için en yaygın kullanılan birim
+   */
+  defaultUnit: string | IngredientUnit;
+  /**
+   * Bu malzemenin taze olduğu mevsimler
+   */
+  seasons?: (string | Season)[] | null;
+  /**
+   * Bu malzemenin nasıl saklanacağı hakkında bilgi
+   */
+  storageInstructions?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Yatay görsel (1920x1080) - Hero, banner kullanımı için
+   */
+  image16x9?: (string | null) | Media;
+  /**
+   * Kare görsel (1080x1080) - Kart, grid kullanımı için (zorunlu)
+   */
+  image1x1: string | Media;
+  /**
+   * Dikey görsel (1080x2160) - Mobile, story kullanımı için
+   */
+  image1x2?: (string | null) | Media;
+  /**
+   * Malzeme için küçük ikon (menülerde kullanılır)
+   */
+  icon?: (string | null) | Media;
+  /**
+   * Malzeme için tema rengi (hex kod)
+   */
+  color?: string | null;
+  /**
+   * Malzeme ile ilgili ek görseller
+   */
+  gallery?:
+    | {
+        image: string | Media;
+        caption?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * URL için benzersiz kimlik
+   */
+  slug?: string | null;
+  /**
+   * Listeleme sırası (düşük sayılar önce görünür)
+   */
+  sortOrder?: number | null;
+  /**
+   * Aktif malzemeler tariflerde kullanılabilir
+   */
+  isActive?: boolean | null;
+  /**
+   * Bu malzemenin organik versiyonu bulunuyor mu?
+   */
+  isOrganic?: boolean | null;
+  /**
+   * Kilogram/litre başına ortalama fiyat (opsiyonel)
+   */
+  avgPrice?: number | null;
+  /**
+   * Bu malzeme ne kadar kolay bulunur?
+   */
+  availability?: ('common' | 'moderate' | 'rare' | 'imported') | null;
+  /**
+   * Sadece yöneticiler için notlar (kullanıcılara görünmez)
+   */
+  adminNotes?: string | null;
+  /**
+   * Arama motorlarında görünecek başlık (60 karakter)
+   */
+  seoTitle?: string | null;
+  /**
+   * Arama motorlarında görünecek açıklama (160 karakter)
+   */
+  seoDescription?: string | null;
+  /**
+   * Arama motorları için anahtar kelimeler
+   */
+  seoKeywords?:
+    | {
+        keyword?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Sosyal medyada paylaşılırken kullanılacak görsel
+   */
+  seoImage?: (string | null) | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ingredientCategories".
+ */
+export interface IngredientCategory {
+  id: string;
+  /**
+   * Malzeme kategorisinin adı
+   */
+  name: string;
+  /**
+   * Bu kategori hakkında açıklama
+   */
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Bu bir alt kategori ise üst kategorisini seçin
+   */
+  parent?: (string | null) | IngredientCategory;
+  /**
+   * Bu kategorideki malzemelerin genel saklama koşulları
+   */
+  storageInstructions?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Bu kategorinin genel beslenme değerleri hakkında bilgi
+   */
+  nutritionalInfo?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Bu kategorideki malzemelerin hangi mevsimlerde taze olduğu
+   */
+  seasonality?:
+    | {
+        season?: (string | null) | Season;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Kategoriyi temsil eden ana görsel
+   */
+  featuredImage?: (string | null) | Media;
+  /**
+   * Kategori için ikon
+   */
+  icon?: (string | null) | Media;
+  /**
+   * Kategori için tema rengi (hex kod)
+   */
+  color?: string | null;
+  /**
+   * Kategori ile ilgili ek görseller
+   */
+  gallery?:
+    | {
+        image: string | Media;
+        caption?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * URL için benzersiz kimlik
+   */
+  slug?: string | null;
+  /**
+   * Listeleme sırası (düşük sayılar önce görünür)
+   */
+  sortOrder?: number | null;
+  /**
+   * Aktif kategoriler tariflerde kullanılabilir
+   */
+  isActive?: boolean | null;
+  /**
+   * Ana sayfada öne çıkarılsın mı?
+   */
+  isFeatured?: boolean | null;
+  /**
+   * Sadece yöneticiler için notlar (kullanıcılara görünmez)
+   */
+  adminNotes?: string | null;
+  /**
+   * Arama motorlarında görünecek başlık (60 karakter)
+   */
+  seoTitle?: string | null;
+  /**
+   * Arama motorlarında görünecek açıklama (160 karakter)
+   */
+  seoDescription?: string | null;
+  /**
+   * Arama motorları için anahtar kelimeler
+   */
+  seoKeywords?:
+    | {
+        keyword?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Sosyal medyada paylaşılırken kullanılacak görsel
+   */
+  seoImage?: (string | null) | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ingredientUnits".
+ */
+export interface IngredientUnit {
+  id: string;
+  /**
+   * Birimin tam adı
+   */
+  name: string;
+  /**
+   * Birimin kısa gösterimi
+   */
+  symbol: string;
+  /**
+   * Birimin türü
+   */
+  category: 'weight' | 'volume' | 'piece' | 'measure';
+  /**
+   * Birimin kullanımı hakkında bilgi
+   */
+  description?: string | null;
+  /**
+   * Temel birime dönüştürme oranı (opsiyonel)
+   */
+  conversionRate?: number | null;
+  /**
+   * Birim için ikon (opsiyonel)
+   */
+  icon?: (string | null) | Media;
+  /**
+   * Birimin nasıl ölçüldüğünü gösteren örnek görsel
+   */
+  exampleImage?: (string | null) | Media;
+  /**
+   * Listeleme sırası (düşük sayılar önce görünür)
+   */
+  sortOrder?: number | null;
+  /**
+   * Aktif birimler tariflerde kullanılabilir
+   */
+  isActive?: boolean | null;
+  /**
+   * Bu birim hassas ölçüm gerektiriyor mu?
+   */
+  isPrecise?: boolean | null;
+  /**
+   * Sadece yöneticiler için notlar (kullanıcılara görünmez)
+   */
+  adminNotes?: string | null;
+  /**
+   * Arama motorlarında görünecek başlık (60 karakter)
+   */
+  seoTitle?: string | null;
+  /**
+   * Arama motorlarında görünecek açıklama (160 karakter)
+   */
+  seoDescription?: string | null;
+  /**
+   * Arama motorları için anahtar kelimeler
+   */
+  seoKeywords?:
+    | {
+        keyword?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Sosyal medyada paylaşılırken kullanılacak görsel
+   */
+  seoImage?: (string | null) | Media;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -170,6 +2146,62 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: string | Media;
+      } | null)
+    | ({
+        relationTo: 'categories';
+        value: string | Category;
+      } | null)
+    | ({
+        relationTo: 'recipes';
+        value: string | Recipe;
+      } | null)
+    | ({
+        relationTo: 'ingredients';
+        value: string | Ingredient;
+      } | null)
+    | ({
+        relationTo: 'ingredientUnits';
+        value: string | IngredientUnit;
+      } | null)
+    | ({
+        relationTo: 'cookingMethods';
+        value: string | CookingMethod;
+      } | null)
+    | ({
+        relationTo: 'cuisines';
+        value: string | Cuisine;
+      } | null)
+    | ({
+        relationTo: 'difficultyLevels';
+        value: string | DifficultyLevel;
+      } | null)
+    | ({
+        relationTo: 'seasons';
+        value: string | Season;
+      } | null)
+    | ({
+        relationTo: 'dietaryTypes';
+        value: string | DietaryType;
+      } | null)
+    | ({
+        relationTo: 'ingredientCategories';
+        value: string | IngredientCategory;
+      } | null)
+    | ({
+        relationTo: 'continents';
+        value: string | Continent;
+      } | null)
+    | ({
+        relationTo: 'countries';
+        value: string | Country;
+      } | null)
+    | ({
+        relationTo: 'regions';
+        value: string | Region;
+      } | null)
+    | ({
+        relationTo: 'cities';
+        value: string | City;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -218,6 +2250,10 @@ export interface PayloadMigration {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  username?: T;
+  firstname?: T;
+  lastname?: T;
+  role?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -240,6 +2276,7 @@ export interface UsersSelect<T extends boolean = true> {
  * via the `definition` "media_select".
  */
 export interface MediaSelect<T extends boolean = true> {
+  aspectRatio?: T;
   alt?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -252,6 +2289,696 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+  sizes?: T | {};
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories_select".
+ */
+export interface CategoriesSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  parent?: T;
+  image16x9?: T;
+  image1x1?: T;
+  image1x2?: T;
+  icon?: T;
+  color?: T;
+  gallery?:
+    | T
+    | {
+        image?: T;
+        caption?: T;
+        id?: T;
+      };
+  slug?: T;
+  sortOrder?: T;
+  isActive?: T;
+  isFeatured?: T;
+  recipeCount?: T;
+  adminNotes?: T;
+  seoTitle?: T;
+  seoDescription?: T;
+  seoKeywords?:
+    | T
+    | {
+        keyword?: T;
+        id?: T;
+      };
+  seoImage?: T;
+  canonicalUrl?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "recipes_select".
+ */
+export interface RecipesSelect<T extends boolean = true> {
+  title?: T;
+  description?: T;
+  category?: T;
+  tags?:
+    | T
+    | {
+        tag?: T;
+        id?: T;
+      };
+  image16x9?: T;
+  image1x1?: T;
+  image1x2?: T;
+  gallery?:
+    | T
+    | {
+        image?: T;
+        caption?: T;
+        isStepImage?: T;
+        id?: T;
+      };
+  videoUrl?: T;
+  thumbnailImage?: T;
+  servings?: T;
+  prepTime?: T;
+  cookingTime?: T;
+  totalTime?: T;
+  difficulty?: T;
+  cuisine?: T;
+  cookingMethod?: T;
+  season?: T;
+  dietaryInfo?:
+    | T
+    | {
+        diet?: T;
+        id?: T;
+      };
+  ingredients?:
+    | T
+    | {
+        ingredient?: T;
+        amount?: T;
+        unit?: T;
+        notes?: T;
+        isOptional?: T;
+        category?: T;
+        id?: T;
+      };
+  instructions?:
+    | T
+    | {
+        step?: T;
+        image?: T;
+        duration?: T;
+        temperature?: T;
+        tips?: T;
+        id?: T;
+      };
+  chefsTips?: T;
+  nutrition?:
+    | T
+    | {
+        calories?: T;
+        protein?: T;
+        carbs?: T;
+        fat?: T;
+        fiber?: T;
+        sugar?: T;
+        sodium?: T;
+        cholesterol?: T;
+      };
+  seoTitle?: T;
+  seoDescription?: T;
+  seoKeywords?:
+    | T
+    | {
+        keyword?: T;
+        id?: T;
+      };
+  seoImage?: T;
+  slug?: T;
+  status?: T;
+  featured?: T;
+  allowComments?: T;
+  allowRating?: T;
+  publishedAt?: T;
+  author?: T;
+  notes?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ingredients_select".
+ */
+export interface IngredientsSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  category?: T;
+  defaultUnit?: T;
+  seasons?: T;
+  storageInstructions?: T;
+  image16x9?: T;
+  image1x1?: T;
+  image1x2?: T;
+  icon?: T;
+  color?: T;
+  gallery?:
+    | T
+    | {
+        image?: T;
+        caption?: T;
+        id?: T;
+      };
+  slug?: T;
+  sortOrder?: T;
+  isActive?: T;
+  isOrganic?: T;
+  avgPrice?: T;
+  availability?: T;
+  adminNotes?: T;
+  seoTitle?: T;
+  seoDescription?: T;
+  seoKeywords?:
+    | T
+    | {
+        keyword?: T;
+        id?: T;
+      };
+  seoImage?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ingredientUnits_select".
+ */
+export interface IngredientUnitsSelect<T extends boolean = true> {
+  name?: T;
+  symbol?: T;
+  category?: T;
+  description?: T;
+  conversionRate?: T;
+  icon?: T;
+  exampleImage?: T;
+  sortOrder?: T;
+  isActive?: T;
+  isPrecise?: T;
+  adminNotes?: T;
+  seoTitle?: T;
+  seoDescription?: T;
+  seoKeywords?:
+    | T
+    | {
+        keyword?: T;
+        id?: T;
+      };
+  seoImage?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "cookingMethods_select".
+ */
+export interface CookingMethodsSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  category?: T;
+  averageTime?: T;
+  temperature?:
+    | T
+    | {
+        min?: T;
+        max?: T;
+      };
+  equipment?:
+    | T
+    | {
+        item?: T;
+        id?: T;
+      };
+  tips?: T;
+  featuredImage?: T;
+  icon?: T;
+  instructionalVideo?: T;
+  gallery?:
+    | T
+    | {
+        image?: T;
+        caption?: T;
+        id?: T;
+      };
+  slug?: T;
+  sortOrder?: T;
+  isActive?: T;
+  isFeatured?: T;
+  difficultyRequired?: T;
+  adminNotes?: T;
+  seoTitle?: T;
+  seoDescription?: T;
+  seoKeywords?:
+    | T
+    | {
+        keyword?: T;
+        id?: T;
+      };
+  seoImage?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "cuisines_select".
+ */
+export interface CuisinesSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  geographicScope?:
+    | T
+    | {
+        continent?: T;
+        countries?: T;
+        regions?: T;
+        cities?: T;
+      };
+  primaryLocation?:
+    | T
+    | {
+        type?: T;
+        continent?: T;
+        country?: T;
+        region?: T;
+        city?: T;
+      };
+  characteristics?:
+    | T
+    | {
+        characteristic?: T;
+        id?: T;
+      };
+  popularIngredients?:
+    | T
+    | {
+        ingredient?: T;
+        id?: T;
+      };
+  image16x9?: T;
+  image1x1?: T;
+  image1x2?: T;
+  icon?: T;
+  flag?: T;
+  color?: T;
+  gallery?:
+    | T
+    | {
+        image?: T;
+        caption?: T;
+        id?: T;
+      };
+  slug?: T;
+  sortOrder?: T;
+  isActive?: T;
+  isFeatured?: T;
+  adminNotes?: T;
+  seoTitle?: T;
+  seoDescription?: T;
+  seoKeywords?:
+    | T
+    | {
+        keyword?: T;
+        id?: T;
+      };
+  seoImage?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "difficultyLevels_select".
+ */
+export interface DifficultyLevelsSelect<T extends boolean = true> {
+  name?: T;
+  level?: T;
+  description?: T;
+  skillRequired?: T;
+  estimatedTime?:
+    | T
+    | {
+        min?: T;
+        max?: T;
+      };
+  prerequisites?:
+    | T
+    | {
+        prerequisite?: T;
+        id?: T;
+      };
+  featuredImage?: T;
+  icon?: T;
+  color?: T;
+  badge?: T;
+  sortOrder?: T;
+  isActive?: T;
+  isVisible?: T;
+  recommendedFor?: T;
+  adminNotes?: T;
+  seoTitle?: T;
+  seoDescription?: T;
+  seoKeywords?:
+    | T
+    | {
+        keyword?: T;
+        id?: T;
+      };
+  seoImage?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "seasons_select".
+ */
+export interface SeasonsSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  months?:
+    | T
+    | {
+        month?: T;
+        id?: T;
+      };
+  characteristics?:
+    | T
+    | {
+        characteristic?: T;
+        id?: T;
+      };
+  popularIngredients?:
+    | T
+    | {
+        ingredient?: T;
+        id?: T;
+      };
+  cookingTips?: T;
+  featuredImage?: T;
+  icon?: T;
+  color?: T;
+  backgroundImage?: T;
+  gallery?:
+    | T
+    | {
+        image?: T;
+        caption?: T;
+        id?: T;
+      };
+  slug?: T;
+  sortOrder?: T;
+  isActive?: T;
+  isCurrent?: T;
+  temperatureRange?:
+    | T
+    | {
+        min?: T;
+        max?: T;
+      };
+  adminNotes?: T;
+  seoTitle?: T;
+  seoDescription?: T;
+  seoKeywords?:
+    | T
+    | {
+        keyword?: T;
+        id?: T;
+      };
+  seoImage?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "dietaryTypes_select".
+ */
+export interface DietaryTypesSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  category?: T;
+  allowedIngredients?:
+    | T
+    | {
+        ingredient?: T;
+        id?: T;
+      };
+  forbiddenIngredients?:
+    | T
+    | {
+        ingredient?: T;
+        id?: T;
+      };
+  benefits?:
+    | T
+    | {
+        benefit?: T;
+        id?: T;
+      };
+  isHealthBased?: T;
+  isAllergyBased?: T;
+  featuredImage?: T;
+  icon?: T;
+  color?: T;
+  gallery?:
+    | T
+    | {
+        image?: T;
+        caption?: T;
+        id?: T;
+      };
+  slug?: T;
+  sortOrder?: T;
+  isActive?: T;
+  isFeatured?: T;
+  adminNotes?: T;
+  seoTitle?: T;
+  seoDescription?: T;
+  seoKeywords?:
+    | T
+    | {
+        keyword?: T;
+        id?: T;
+      };
+  seoImage?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ingredientCategories_select".
+ */
+export interface IngredientCategoriesSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  parent?: T;
+  storageInstructions?: T;
+  nutritionalInfo?: T;
+  seasonality?:
+    | T
+    | {
+        season?: T;
+        id?: T;
+      };
+  featuredImage?: T;
+  icon?: T;
+  color?: T;
+  gallery?:
+    | T
+    | {
+        image?: T;
+        caption?: T;
+        id?: T;
+      };
+  slug?: T;
+  sortOrder?: T;
+  isActive?: T;
+  isFeatured?: T;
+  adminNotes?: T;
+  seoTitle?: T;
+  seoDescription?: T;
+  seoKeywords?:
+    | T
+    | {
+        keyword?: T;
+        id?: T;
+      };
+  seoImage?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "continents_select".
+ */
+export interface ContinentsSelect<T extends boolean = true> {
+  name?: T;
+  code?: T;
+  description?: T;
+  image16x9?: T;
+  image1x1?: T;
+  image1x2?: T;
+  icon?: T;
+  color?: T;
+  slug?: T;
+  sortOrder?: T;
+  isActive?: T;
+  countryCount?: T;
+  adminNotes?: T;
+  seoTitle?: T;
+  seoDescription?: T;
+  seoKeywords?:
+    | T
+    | {
+        keyword?: T;
+        id?: T;
+      };
+  seoImage?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "countries_select".
+ */
+export interface CountriesSelect<T extends boolean = true> {
+  name?: T;
+  code?: T;
+  continent?: T;
+  capital?: T;
+  description?: T;
+  image16x9?: T;
+  image1x1?: T;
+  image1x2?: T;
+  flag?: T;
+  icon?: T;
+  color?: T;
+  gallery?:
+    | T
+    | {
+        image?: T;
+        caption?: T;
+        id?: T;
+      };
+  slug?: T;
+  sortOrder?: T;
+  isActive?: T;
+  isIndependent?: T;
+  regionCount?: T;
+  adminNotes?: T;
+  seoTitle?: T;
+  seoDescription?: T;
+  seoKeywords?:
+    | T
+    | {
+        keyword?: T;
+        id?: T;
+      };
+  seoImage?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "regions_select".
+ */
+export interface RegionsSelect<T extends boolean = true> {
+  name?: T;
+  country?: T;
+  type?: T;
+  description?: T;
+  capital?: T;
+  characteristics?:
+    | T
+    | {
+        characteristic?: T;
+        id?: T;
+      };
+  climate?: T;
+  image16x9?: T;
+  image1x1?: T;
+  image1x2?: T;
+  icon?: T;
+  color?: T;
+  gallery?:
+    | T
+    | {
+        image?: T;
+        caption?: T;
+        id?: T;
+      };
+  slug?: T;
+  sortOrder?: T;
+  isActive?: T;
+  isTouristDestination?: T;
+  cityCount?: T;
+  economicActivity?: T;
+  adminNotes?: T;
+  seoTitle?: T;
+  seoDescription?: T;
+  seoKeywords?:
+    | T
+    | {
+        keyword?: T;
+        id?: T;
+      };
+  seoImage?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "cities_select".
+ */
+export interface CitiesSelect<T extends boolean = true> {
+  name?: T;
+  country?: T;
+  region?: T;
+  description?: T;
+  coordinates?:
+    | T
+    | {
+        latitude?: T;
+        longitude?: T;
+      };
+  image16x9?: T;
+  image1x1?: T;
+  image1x2?: T;
+  skylineImage?: T;
+  icon?: T;
+  color?: T;
+  gallery?:
+    | T
+    | {
+        image?: T;
+        caption?: T;
+        location?: T;
+        id?: T;
+      };
+  slug?: T;
+  sortOrder?: T;
+  isActive?: T;
+  isCapital?: T;
+  isMajorCity?: T;
+  isTouristDestination?: T;
+  economicActivity?: T;
+  adminNotes?: T;
+  seoTitle?: T;
+  seoDescription?: T;
+  seoKeywords?:
+    | T
+    | {
+        keyword?: T;
+        id?: T;
+      };
+  seoImage?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

@@ -9,5 +9,24 @@ export const Users: CollectionConfig = {
   fields: [
     // Email added by default
     // Add more fields as needed
+    {
+      name: 'username',
+      type: 'text',
+      required: true,
+      unique: true,
+    },
+    {
+      name: 'firstname',
+      type: 'text',
+    },
+    {
+      name: 'lastname',
+      type: 'text',
+    },
+    { name: 'role', type: 'select', options: [
+      { label: 'Admin', value: 'admin' },
+      { label: 'Editor', value: 'editor' },
+      { label: 'Viewer', value: 'viewer' },
+    ], defaultValue: 'viewer', required: true },
   ],
 }
