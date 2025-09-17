@@ -74,7 +74,6 @@ export const Categories: CollectionConfig = {
               label: '1:1 Görsel',
               type: 'upload',
               relationTo: 'media',
-              required: true,
               admin: {
                 description: 'Kare görsel (1080x1080) - Kart, grid kullanımı için (zorunlu)',
               },

@@ -53,12 +53,9 @@ export const Recipes: CollectionConfig = {
             {
               name: 'description',
               label: 'Kısa Açıklama',
-              type: 'textarea',
+              type: 'richText',
               required: true,
-              minLength: 20,
-              maxLength: 300,
               admin: {
-                placeholder: 'Bu tarif hakkında kısa ve çekici bir açıklama yazın...',
                 description: 'Tarifin özet açıklaması (arama sonuçlarında görünür)',
               },
             },
@@ -108,7 +105,6 @@ export const Recipes: CollectionConfig = {
               label: '1:1 Görsel',
               type: 'upload',
               relationTo: 'media',
-              required: true,
               admin: {
                 description: 'Kare görsel (1080x1080) - Kart, grid kullanımı için (zorunlu)',
               },

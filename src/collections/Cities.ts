@@ -99,7 +99,6 @@ export const Cities: CollectionConfig = {
               label: '1:1 Görsel',
               type: 'upload',
               relationTo: 'media',
-              required: true,
               admin: {
                 description: 'Kare görsel (1080x1080) - Kart, grid kullanımı için (zorunlu)',
               },
@@ -327,6 +326,21 @@ export const Cities: CollectionConfig = {
               relationTo: 'media',
               admin: {
                 description: 'Sosyal medyada paylaşılırken kullanılacak görsel',
+              },
+            },
+          ],
+        },
+        {
+          label: 'Trafic Codes',
+          fields: [
+            {
+              name: 'traficCode',
+              label: 'Trafik Kodu',
+              type: 'text',
+              required: true,
+              unique: true,
+              admin: {
+                description: 'Bu şehir için trafik kodu',
               },
             },
           ],
