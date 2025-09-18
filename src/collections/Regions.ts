@@ -69,39 +69,6 @@ export const Regions: CollectionConfig = {
                 description: 'Bölgenin merkez şehri (varsa)',
               },
             },
-            {
-              name: 'characteristics',
-              label: 'Özellikler',
-              type: 'array',
-              fields: [
-                {
-                  name: 'characteristic',
-                  type: 'text',
-                  admin: {
-                    placeholder: 'deniz kıyısı, dağlık, tarım bölgesi',
-                  },
-                },
-              ],
-              admin: {
-                description: 'Bölgenin karakteristik özellikleri',
-              },
-            },
-            {
-              name: 'climate',
-              label: 'İklim',
-              type: 'select',
-              options: [
-                { label: 'Akdeniz İklimi', value: 'mediterranean' },
-                { label: 'Karasal İklim', value: 'continental' },
-                { label: 'Okyanus İklimi', value: 'oceanic' },
-                { label: 'Tropik İklim', value: 'tropical' },
-                { label: 'Çöl İklimi', value: 'desert' },
-                { label: 'Kutup İklimi', value: 'polar' },
-              ],
-              admin: {
-                description: 'Bölgenin hakim iklim türü',
-              },
-            },
           ],
         },
         {
@@ -141,39 +108,6 @@ export const Regions: CollectionConfig = {
               relationTo: 'media',
               admin: {
                 description: 'Bölge için ikon',
-              },
-            },
-            {
-              name: 'color',
-              label: 'Tema Rengi',
-              type: 'text',
-              admin: {
-                placeholder: '#3498DB, #E67E22, #9B59B6',
-                description: 'Bölge için tema rengi (hex kod)',
-              },
-            },
-            {
-              name: 'gallery',
-              label: 'Galeri',
-              type: 'array',
-              fields: [
-                {
-                  name: 'image',
-                  type: 'upload',
-                  relationTo: 'media',
-                  required: true,
-                },
-                {
-                  name: 'caption',
-                  label: 'Açıklama',
-                  type: 'text',
-                  admin: {
-                    placeholder: 'Bu görselin açıklaması',
-                  },
-                },
-              ],
-              admin: {
-                description: 'Bölge ile ilgili ek görseller',
               },
             },
           ],
@@ -260,14 +194,6 @@ export const Regions: CollectionConfig = {
               ],
               admin: {
                 description: 'Bölgenin ana ekonomik faaliyeti',
-              },
-            },
-            {
-              name: 'adminNotes',
-              label: 'Yönetici Notları',
-              type: 'textarea',
-              admin: {
-                description: 'Sadece yöneticiler için notlar (kullanıcılara görünmez)',
               },
             },
           ],

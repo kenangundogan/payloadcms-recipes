@@ -58,76 +58,57 @@ export const Categories: CollectionConfig = {
           ],
         },
         {
-          label: 'Media',
+          label: 'Images',
           fields: [
             {
-              name: 'image16x9',
-              label: '16:9 Görsel',
-              type: 'upload',
-              relationTo: 'media',
-              admin: {
-                description: 'Yatay görsel (1920x1080) - Hero, banner kullanımı için',
-              },
-            },
-            {
-              name: 'image1x1',
-              label: '1:1 Görsel',
-              type: 'upload',
-              relationTo: 'media',
-              admin: {
-                description: 'Kare görsel (1080x1080) - Kart, grid kullanımı için (zorunlu)',
-              },
-            },
-            {
-              name: 'image1x2',
-              label: '1:2 Görsel',
-              type: 'upload',
-              relationTo: 'media',
-              admin: {
-                description: 'Dikey görsel (1080x2160) - Mobile, story kullanımı için',
-              },
-            },
-            {
-              name: 'icon',
-              label: 'İkon',
-              type: 'upload',
-              relationTo: 'media',
-              admin: {
-                description: 'Kategori için küçük ikon görsel (menülerde kullanılır)',
-              },
-            },
-            {
-              name: 'color',
-              label: 'Tema Rengi',
-              type: 'text',
-              admin: {
-                placeholder: '#FF5722, #4CAF50, #2196F3',
-                description: 'Kategori için tema rengi (hex kod)',
-              },
-            },
-            {
-              name: 'gallery',
-              label: 'Galeri',
-              type: 'array',
+              name: 'JPG',
+              label: 'JPG',
+              type: 'group',
               fields: [
                 {
-                  name: 'image',
+                  name: 'jpg16x9',
+                  label: 'Yatay (16:9 - 1920x1080 - JPG)',
                   type: 'upload',
                   relationTo: 'media',
-                  required: true,
                 },
                 {
-                  name: 'caption',
-                  label: 'Açıklama',
-                  type: 'text',
-                  admin: {
-                    placeholder: 'Bu görselin açıklaması',
-                  },
+                  name: 'jpg1x1',
+                  label: 'Kare (1:1 - 1080x1080 - JPG)',
+                  type: 'upload',
+                  relationTo: 'media',
+                },
+                {
+                  name: 'jpg1x2',
+                  label: 'Dikey (1:2 - 1080x2160 - JPG)',
+                  type: 'upload',
+                  relationTo: 'media',
                 },
               ],
-              admin: {
-                description: 'Kategori ile ilgili ek görseller',
-              },
+            },
+            {
+              name: 'PNG',
+              label: 'PNG',
+              type: 'group',
+              fields: [
+                {
+                  name: 'png16x9',
+                  label: 'Yatay (16:9 - 1920x1080 - PNG)',
+                  type: 'upload',
+                  relationTo: 'media',
+                },
+                {
+                  name: 'png1x1',
+                  label: 'Kare (1:1 - 1080x1080 - PNG)',
+                  type: 'upload',
+                  relationTo: 'media',
+                },
+                {
+                  name: 'png1x2',
+                  label: 'Dikey (1:2 - 1080x2160 - PNG)',
+                  type: 'upload',
+                  relationTo: 'media',
+                },
+              ],
             },
           ],
         },
@@ -180,32 +161,6 @@ export const Categories: CollectionConfig = {
               defaultValue: true,
               admin: {
                 description: 'Kategorinin sitede görünür olup olmayacağı',
-              },
-            },
-            {
-              name: 'isFeatured',
-              label: 'Öne Çıkarılsın mı?',
-              type: 'checkbox',
-              defaultValue: false,
-              admin: {
-                description: 'Ana sayfada öne çıkarılsın mı?',
-              },
-            },
-            {
-              name: 'recipeCount',
-              label: 'Tarif Sayısı',
-              type: 'number',
-              admin: {
-                readOnly: true,
-                description: 'Bu kategorideki toplam tarif sayısı (otomatik hesaplanır)',
-              },
-            },
-            {
-              name: 'adminNotes',
-              label: 'Yönetici Notları',
-              type: 'textarea',
-              admin: {
-                description: 'Sadece yöneticiler için notlar (kullanıcılara görünmez)',
               },
             },
           ],

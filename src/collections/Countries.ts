@@ -118,39 +118,6 @@ export const Countries: CollectionConfig = {
                 description: 'Ülke için ikon',
               },
             },
-            {
-              name: 'color',
-              label: 'Tema Rengi',
-              type: 'text',
-              admin: {
-                placeholder: '#E74C3C, #27AE60, #3498DB',
-                description: 'Ülke için tema rengi (hex kod)',
-              },
-            },
-            {
-              name: 'gallery',
-              label: 'Galeri',
-              type: 'array',
-              fields: [
-                {
-                  name: 'image',
-                  type: 'upload',
-                  relationTo: 'media',
-                  required: true,
-                },
-                {
-                  name: 'caption',
-                  label: 'Açıklama',
-                  type: 'text',
-                  admin: {
-                    placeholder: 'Bu görselin açıklaması',
-                  },
-                },
-              ],
-              admin: {
-                description: 'Ülke ile ilgili görseller',
-              },
-            },
           ],
         },
         {
@@ -219,14 +186,6 @@ export const Countries: CollectionConfig = {
               admin: {
                 readOnly: true,
                 description: 'Bu ülkedeki bölge sayısı (otomatik hesaplanır)',
-              },
-            },
-            {
-              name: 'adminNotes',
-              label: 'Yönetici Notları',
-              type: 'textarea',
-              admin: {
-                description: 'Sadece yöneticiler için notlar (kullanıcılara görünmez)',
               },
             },
           ],

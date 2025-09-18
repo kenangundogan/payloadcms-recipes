@@ -89,15 +89,6 @@ export const Continents: CollectionConfig = {
                 description: 'Kıta için ikon',
               },
             },
-            {
-              name: 'color',
-              label: 'Tema Rengi',
-              type: 'text',
-              admin: {
-                placeholder: '#2196F3, #4CAF50, #FF5722',
-                description: 'Kıta için tema rengi (hex kod)',
-              },
-            },
           ],
         },
         {
@@ -157,14 +148,6 @@ export const Continents: CollectionConfig = {
               admin: {
                 readOnly: true,
                 description: 'Bu kıtadaki ülke sayısı (otomatik hesaplanır)',
-              },
-            },
-            {
-              name: 'adminNotes',
-              label: 'Yönetici Notları',
-              type: 'textarea',
-              admin: {
-                description: 'Sadece yöneticiler için notlar (kullanıcılara görünmez)',
               },
             },
           ],

@@ -118,15 +118,6 @@ export const DifficultyLevels: CollectionConfig = {
               },
             },
             {
-              name: 'color',
-              label: 'Tema Rengi',
-              type: 'text',
-              admin: {
-                placeholder: '#28a745, #ffc107, #dc3545',
-                description: "UI'da gösterilecek renk (hex kod)",
-              },
-            },
-            {
               name: 'badge',
               label: 'Rozet Görseli',
               type: 'upload',
@@ -179,14 +170,6 @@ export const DifficultyLevels: CollectionConfig = {
               ],
               admin: {
                 description: 'Bu zorluk seviyesi hangi grup için uygun?',
-              },
-            },
-            {
-              name: 'adminNotes',
-              label: 'Yönetici Notları',
-              type: 'textarea',
-              admin: {
-                description: 'Sadece yöneticiler için notlar (kullanıcılara görünmez)',
               },
             },
           ],

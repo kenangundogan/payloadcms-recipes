@@ -139,30 +139,6 @@ export const CookingMethods: CollectionConfig = {
                 description: "Bu pişirme yöntemini gösteren video URL'si",
               },
             },
-            {
-              name: 'gallery',
-              label: 'Galeri',
-              type: 'array',
-              fields: [
-                {
-                  name: 'image',
-                  type: 'upload',
-                  relationTo: 'media',
-                  required: true,
-                },
-                {
-                  name: 'caption',
-                  label: 'Açıklama',
-                  type: 'text',
-                  admin: {
-                    placeholder: 'Bu görselin açıklaması',
-                  },
-                },
-              ],
-              admin: {
-                description: 'Pişirme yöntemi ile ilgili ek görseller',
-              },
-            },
           ],
         },
         {
@@ -231,14 +207,6 @@ export const CookingMethods: CollectionConfig = {
               relationTo: 'difficultyLevels',
               admin: {
                 description: 'Bu yöntem için gereken minimum zorluk seviyesi',
-              },
-            },
-            {
-              name: 'adminNotes',
-              label: 'Yönetici Notları',
-              type: 'textarea',
-              admin: {
-                description: 'Sadece yöneticiler için notlar (kullanıcılara görünmez)',
               },
             },
           ],

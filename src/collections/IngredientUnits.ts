@@ -126,14 +126,6 @@ export const IngredientUnits: CollectionConfig = {
                 description: 'Bu birim hassas ölçüm gerektiriyor mu?',
               },
             },
-            {
-              name: 'adminNotes',
-              label: 'Yönetici Notları',
-              type: 'textarea',
-              admin: {
-                description: 'Sadece yöneticiler için notlar (kullanıcılara görünmez)',
-              },
-            },
           ],
         },
         {

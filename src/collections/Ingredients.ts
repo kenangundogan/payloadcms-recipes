@@ -37,6 +37,14 @@ export const Ingredients: CollectionConfig = {
               },
             },
             {
+              name: 'content',
+              label: 'İçerik',
+              type: 'richText',
+              admin: {
+                description: 'Bu malzeme hakkında detaylı açıklama',
+              },
+            },
+            {
               name: 'category',
               label: 'Kategori',
               type: 'relationship',
@@ -113,39 +121,6 @@ export const Ingredients: CollectionConfig = {
               relationTo: 'media',
               admin: {
                 description: 'Malzeme için küçük ikon (menülerde kullanılır)',
-              },
-            },
-            {
-              name: 'color',
-              label: 'Tema Rengi',
-              type: 'text',
-              admin: {
-                placeholder: '#FF5722, #4CAF50, #FFC107',
-                description: 'Malzeme için tema rengi (hex kod)',
-              },
-            },
-            {
-              name: 'gallery',
-              label: 'Galeri',
-              type: 'array',
-              fields: [
-                {
-                  name: 'image',
-                  type: 'upload',
-                  relationTo: 'media',
-                  required: true,
-                },
-                {
-                  name: 'caption',
-                  label: 'Açıklama',
-                  type: 'text',
-                  admin: {
-                    placeholder: 'Bu görselin açıklaması',
-                  },
-                },
-              ],
-              admin: {
-                description: 'Malzeme ile ilgili ek görseller',
               },
             },
           ],
@@ -230,14 +205,6 @@ export const Ingredients: CollectionConfig = {
               ],
               admin: {
                 description: 'Bu malzeme ne kadar kolay bulunur?',
-              },
-            },
-            {
-              name: 'adminNotes',
-              label: 'Yönetici Notları',
-              type: 'textarea',
-              admin: {
-                description: 'Sadece yöneticiler için notlar (kullanıcılara görünmez)',
               },
             },
           ],

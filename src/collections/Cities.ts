@@ -54,30 +54,25 @@ export const Cities: CollectionConfig = {
                 description: 'Bu şehir hakkında detaylı bilgiler',
               },
             },
+          ],
+        },
+        {
+          label: 'Koordinatlar',
+          fields: [
             {
-              name: 'coordinates',
-              label: 'Koordinatlar',
-              type: 'group',
-              fields: [
-                {
-                  name: 'latitude',
-                  label: 'Enlem',
-                  type: 'number',
-                  admin: {
-                    placeholder: '41.0082',
-                  },
-                },
-                {
-                  name: 'longitude',
-                  label: 'Boylam',
-                  type: 'number',
-                  admin: {
-                    placeholder: '28.9784',
-                  },
-                },
-              ],
+              name: 'latitude',
+              label: 'Enlem',
+              type: 'number',
               admin: {
-                description: 'Şehrin GPS koordinatları',
+                placeholder: '41.0082',
+              },
+            },
+            {
+              name: 'longitude',
+              label: 'Boylam',
+              type: 'number',
+              admin: {
+                placeholder: '28.9784',
               },
             },
           ],
@@ -112,33 +107,11 @@ export const Cities: CollectionConfig = {
                 description: 'Dikey görsel (1080x2160) - Mobile, story kullanımı için',
               },
             },
-            {
-              name: 'skylineImage',
-              label: 'Silüet Görseli',
-              type: 'upload',
-              relationTo: 'media',
-              admin: {
-                description: 'Şehrin silüet/panorama görseli',
-              },
-            },
-            {
-              name: 'icon',
-              label: 'İkon',
-              type: 'upload',
-              relationTo: 'media',
-              admin: {
-                description: 'Şehir için ikon',
-              },
-            },
-            {
-              name: 'color',
-              label: 'Tema Rengi',
-              type: 'text',
-              admin: {
-                placeholder: '#E74C3C, #2ECC71, #F39C12',
-                description: 'Şehir için tema rengi (hex kod)',
-              },
-            },
+          ],
+        },
+        {
+          label: 'Galeri',
+          fields: [
             {
               name: 'gallery',
               label: 'Galeri',
@@ -158,18 +131,7 @@ export const Cities: CollectionConfig = {
                     placeholder: 'Bu görselin açıklaması',
                   },
                 },
-                {
-                  name: 'location',
-                  label: 'Konum',
-                  type: 'text',
-                  admin: {
-                    placeholder: 'Sultanahmet, Colosseum, Eiffel Tower',
-                  },
-                },
               ],
-              admin: {
-                description: 'Şehir ile ilgili ek görseller',
-              },
             },
           ],
         },
@@ -241,41 +203,6 @@ export const Cities: CollectionConfig = {
                 description: 'Bu şehir büyük bir metropol mü?',
               },
             },
-            {
-              name: 'isTouristDestination',
-              label: 'Turist Destinasyonu',
-              type: 'checkbox',
-              defaultValue: false,
-              admin: {
-                description: 'Bu şehir popüler bir turist destinasyonu mu?',
-              },
-            },
-            {
-              name: 'economicActivity',
-              label: 'Ana Ekonomik Faaliyet',
-              type: 'select',
-              options: [
-                { label: 'Ticaret', value: 'commerce' },
-                { label: 'Turizm', value: 'tourism' },
-                { label: 'Sanayi', value: 'industry' },
-                { label: 'Hizmet', value: 'services' },
-                { label: 'Tarım', value: 'agriculture' },
-                { label: 'Balıkçılık', value: 'fishing' },
-                { label: 'Teknoloji', value: 'technology' },
-                { label: 'Finans', value: 'finance' },
-              ],
-              admin: {
-                description: 'Şehrin ana ekonomik faaliyeti',
-              },
-            },
-            {
-              name: 'adminNotes',
-              label: 'Yönetici Notları',
-              type: 'textarea',
-              admin: {
-                description: 'Sadece yöneticiler için notlar (kullanıcılara görünmez)',
-              },
-            },
           ],
         },
         {
@@ -326,21 +253,6 @@ export const Cities: CollectionConfig = {
               relationTo: 'media',
               admin: {
                 description: 'Sosyal medyada paylaşılırken kullanılacak görsel',
-              },
-            },
-          ],
-        },
-        {
-          label: 'Trafic Codes',
-          fields: [
-            {
-              name: 'traficCode',
-              label: 'Trafik Kodu',
-              type: 'text',
-              required: true,
-              unique: true,
-              admin: {
-                description: 'Bu şehir için trafik kodu',
               },
             },
           ],

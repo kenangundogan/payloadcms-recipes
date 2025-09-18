@@ -234,39 +234,6 @@ export const Cuisines: CollectionConfig = {
                 description: 'Ülke bayrağı veya mutfak simgesi',
               },
             },
-            {
-              name: 'color',
-              label: 'Tema Rengi',
-              type: 'text',
-              admin: {
-                placeholder: '#E74C3C, #27AE60, #3498DB',
-                description: 'Mutfak için tema rengi (hex kod)',
-              },
-            },
-            {
-              name: 'gallery',
-              label: 'Galeri',
-              type: 'array',
-              fields: [
-                {
-                  name: 'image',
-                  type: 'upload',
-                  relationTo: 'media',
-                  required: true,
-                },
-                {
-                  name: 'caption',
-                  label: 'Açıklama',
-                  type: 'text',
-                  admin: {
-                    placeholder: 'Bu görselin açıklaması',
-                  },
-                },
-              ],
-              admin: {
-                description: 'Mutfak ile ilgili ek görseller',
-              },
-            },
           ],
         },
         {
@@ -326,14 +293,6 @@ export const Cuisines: CollectionConfig = {
               defaultValue: false,
               admin: {
                 description: 'Ana sayfada öne çıkarılsın mı?',
-              },
-            },
-            {
-              name: 'adminNotes',
-              label: 'Yönetici Notları',
-              type: 'textarea',
-              admin: {
-                description: 'Sadece yöneticiler için notlar (kullanıcılara görünmez)',
               },
             },
           ],

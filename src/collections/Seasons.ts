@@ -130,45 +130,12 @@ export const Seasons: CollectionConfig = {
               },
             },
             {
-              name: 'color',
-              label: 'Tema Rengi',
-              type: 'text',
-              admin: {
-                placeholder: '#4CAF50, #FF9800, #FF5722, #2196F3',
-                description: 'Mevsim için tema rengi (hex kod)',
-              },
-            },
-            {
               name: 'backgroundImage',
               label: 'Arkaplan Görseli',
               type: 'upload',
               relationTo: 'media',
               admin: {
                 description: 'Mevsim sayfası için arkaplan görseli',
-              },
-            },
-            {
-              name: 'gallery',
-              label: 'Galeri',
-              type: 'array',
-              fields: [
-                {
-                  name: 'image',
-                  type: 'upload',
-                  relationTo: 'media',
-                  required: true,
-                },
-                {
-                  name: 'caption',
-                  label: 'Açıklama',
-                  type: 'text',
-                  admin: {
-                    placeholder: 'Bu görselin açıklaması',
-                  },
-                },
-              ],
-              admin: {
-                description: 'Mevsim ile ilgili ek görseller',
               },
             },
           ],
@@ -250,14 +217,6 @@ export const Seasons: CollectionConfig = {
               ],
               admin: {
                 description: 'Bu mevsimin genel sıcaklık aralığı',
-              },
-            },
-            {
-              name: 'adminNotes',
-              label: 'Yönetici Notları',
-              type: 'textarea',
-              admin: {
-                description: 'Sadece yöneticiler için notlar (kullanıcılara görünmez)',
               },
             },
           ],

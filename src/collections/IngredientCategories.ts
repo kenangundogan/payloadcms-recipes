@@ -99,39 +99,6 @@ export const IngredientCategories: CollectionConfig = {
                 description: 'Kategori için ikon',
               },
             },
-            {
-              name: 'color',
-              label: 'Tema Rengi',
-              type: 'text',
-              admin: {
-                placeholder: '#FF5722, #4CAF50, #FF9800',
-                description: 'Kategori için tema rengi (hex kod)',
-              },
-            },
-            {
-              name: 'gallery',
-              label: 'Galeri',
-              type: 'array',
-              fields: [
-                {
-                  name: 'image',
-                  type: 'upload',
-                  relationTo: 'media',
-                  required: true,
-                },
-                {
-                  name: 'caption',
-                  label: 'Açıklama',
-                  type: 'text',
-                  admin: {
-                    placeholder: 'Bu görselin açıklaması',
-                  },
-                },
-              ],
-              admin: {
-                description: 'Kategori ile ilgili ek görseller',
-              },
-            },
           ],
         },
         {
@@ -191,14 +158,6 @@ export const IngredientCategories: CollectionConfig = {
               defaultValue: false,
               admin: {
                 description: 'Ana sayfada öne çıkarılsın mı?',
-              },
-            },
-            {
-              name: 'adminNotes',
-              label: 'Yönetici Notları',
-              type: 'textarea',
-              admin: {
-                description: 'Sadece yöneticiler için notlar (kullanıcılara görünmez)',
               },
             },
           ],

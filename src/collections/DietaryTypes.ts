@@ -143,39 +143,6 @@ export const DietaryTypes: CollectionConfig = {
                 description: 'Diyet türü için ikon',
               },
             },
-            {
-              name: 'color',
-              label: 'Tema Rengi',
-              type: 'text',
-              admin: {
-                placeholder: '#4CAF50, #FF9800, #2196F3',
-                description: "UI'da kullanılacak renk (hex kod)",
-              },
-            },
-            {
-              name: 'gallery',
-              label: 'Galeri',
-              type: 'array',
-              fields: [
-                {
-                  name: 'image',
-                  type: 'upload',
-                  relationTo: 'media',
-                  required: true,
-                },
-                {
-                  name: 'caption',
-                  label: 'Açıklama',
-                  type: 'text',
-                  admin: {
-                    placeholder: 'Bu görselin açıklaması',
-                  },
-                },
-              ],
-              admin: {
-                description: 'Diyet türü ile ilgili ek görseller',
-              },
-            },
           ],
         },
         {
@@ -235,14 +202,6 @@ export const DietaryTypes: CollectionConfig = {
               defaultValue: false,
               admin: {
                 description: 'Ana sayfada öne çıkarılsın mı?',
-              },
-            },
-            {
-              name: 'adminNotes',
-              label: 'Yönetici Notları',
-              type: 'textarea',
-              admin: {
-                description: 'Sadece yöneticiler için notlar (kullanıcılara görünmez)',
               },
             },
           ],
