@@ -178,7 +178,7 @@ export interface Media {
   /**
    * Yüklenecek görselin aspect ratio'sunu seçin
    */
-  aspectRatio: '16x9' | '1x1' | '1x2';
+  aspectRatio: '16x9' | '1x1' | '9x16';
   /**
    * Görsel için açıklama metni (kullanıcılara gösterilir)
    */
@@ -194,7 +194,48 @@ export interface Media {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
-  sizes?: {};
+  sizes?: {
+    large?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    medium?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    small?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    xsmall?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    xxsmall?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -214,36 +255,16 @@ export interface Category {
    * Bu kategori bir alt kategori ise üst kategorisini seçin
    */
   parent?: (string | null) | Category;
-  /**
-   * Yatay görsel (1920x1080) - Hero, banner kullanımı için
-   */
-  image16x9?: (string | null) | Media;
-  /**
-   * Kare görsel (1080x1080) - Kart, grid kullanımı için (zorunlu)
-   */
-  image1x1: string | Media;
-  /**
-   * Dikey görsel (1080x2160) - Mobile, story kullanımı için
-   */
-  image1x2?: (string | null) | Media;
-  /**
-   * Kategori için küçük ikon görsel (menülerde kullanılır)
-   */
-  icon?: (string | null) | Media;
-  /**
-   * Kategori için tema rengi (hex kod)
-   */
-  color?: string | null;
-  /**
-   * Kategori ile ilgili ek görseller
-   */
-  gallery?:
-    | {
-        image: string | Media;
-        caption?: string | null;
-        id?: string | null;
-      }[]
-    | null;
+  JPG?: {
+    jpg16x9?: (string | null) | Media;
+    jpg1x1?: (string | null) | Media;
+    jpg1x2?: (string | null) | Media;
+  };
+  PNG?: {
+    png16x9?: (string | null) | Media;
+    png1x1?: (string | null) | Media;
+    png1x2?: (string | null) | Media;
+  };
   /**
    * URL'de kullanılacak benzersiz kimlik
    */
@@ -256,18 +277,6 @@ export interface Category {
    * Kategorinin sitede görünür olup olmayacağı
    */
   isActive?: boolean | null;
-  /**
-   * Ana sayfada öne çıkarılsın mı?
-   */
-  isFeatured?: boolean | null;
-  /**
-   * Bu kategorideki toplam tarif sayısı (otomatik hesaplanır)
-   */
-  recipeCount?: number | null;
-  /**
-   * Sadece yöneticiler için notlar (kullanıcılara görünmez)
-   */
-  adminNotes?: string | null;
   /**
    * Arama motorlarında görünecek başlık (60 karakter)
    */
@@ -285,10 +294,6 @@ export interface Category {
         id?: string | null;
       }[]
     | null;
-  /**
-   * Sosyal medyada paylaşılırken kullanılacak görsel
-   */
-  seoImage?: (string | null) | Media;
   /**
    * Bu sayfa için canonical URL (opsiyonel)
    */
@@ -309,7 +314,21 @@ export interface Recipe {
   /**
    * Tarifin özet açıklaması (arama sonuçlarında görünür)
    */
-  description: string;
+  description: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
   /**
    * Tarifin ait olduğu ana kategori
    */
@@ -330,7 +349,7 @@ export interface Recipe {
   /**
    * Kare görsel (1080x1080) - Kart, grid kullanımı için (zorunlu)
    */
-  image1x1: string | Media;
+  image1x1?: (string | null) | Media;
   /**
    * Dikey görsel (1080x2160) - Mobile, story kullanımı için
    */
@@ -511,10 +530,6 @@ export interface Recipe {
       }[]
     | null;
   /**
-   * Sosyal medyada paylaşılırken kullanılacak görsel
-   */
-  seoImage?: (string | null) | Media;
-  /**
    * URL'de kullanılacak benzersiz kimlik
    */
   slug?: string | null;
@@ -625,10 +640,6 @@ export interface DifficultyLevel {
    */
   icon?: (string | null) | Media;
   /**
-   * UI'da gösterilecek renk (hex kod)
-   */
-  color?: string | null;
-  /**
    * Bu seviyeyi başaran kullanıcılar için rozet
    */
   badge?: (string | null) | Media;
@@ -649,10 +660,6 @@ export interface DifficultyLevel {
    */
   recommendedFor?: ('beginners' | 'intermediate' | 'advanced' | 'professionals') | null;
   /**
-   * Sadece yöneticiler için notlar (kullanıcılara görünmez)
-   */
-  adminNotes?: string | null;
-  /**
    * Arama motorlarında görünecek başlık (60 karakter)
    */
   seoTitle?: string | null;
@@ -669,10 +676,6 @@ export interface DifficultyLevel {
         id?: string | null;
       }[]
     | null;
-  /**
-   * Sosyal medyada paylaşılırken kullanılacak görsel
-   */
-  seoImage?: (string | null) | Media;
   updatedAt: string;
   createdAt: string;
 }
@@ -775,7 +778,7 @@ export interface Cuisine {
   /**
    * Kare görsel (1080x1080) - Kart, grid kullanımı için (zorunlu)
    */
-  image1x1: string | Media;
+  image1x1?: (string | null) | Media;
   /**
    * Dikey görsel (1080x2160) - Mobile, story kullanımı için
    */
@@ -788,20 +791,6 @@ export interface Cuisine {
    * Ülke bayrağı veya mutfak simgesi
    */
   flag?: (string | null) | Media;
-  /**
-   * Mutfak için tema rengi (hex kod)
-   */
-  color?: string | null;
-  /**
-   * Mutfak ile ilgili ek görseller
-   */
-  gallery?:
-    | {
-        image: string | Media;
-        caption?: string | null;
-        id?: string | null;
-      }[]
-    | null;
   /**
    * URL için benzersiz kimlik
    */
@@ -819,10 +808,6 @@ export interface Cuisine {
    */
   isFeatured?: boolean | null;
   /**
-   * Sadece yöneticiler için notlar (kullanıcılara görünmez)
-   */
-  adminNotes?: string | null;
-  /**
    * Arama motorlarında görünecek başlık (60 karakter)
    */
   seoTitle?: string | null;
@@ -839,10 +824,6 @@ export interface Cuisine {
         id?: string | null;
       }[]
     | null;
-  /**
-   * Sosyal medyada paylaşılırken kullanılacak görsel
-   */
-  seoImage?: (string | null) | Media;
   updatedAt: string;
   createdAt: string;
 }
@@ -885,7 +866,7 @@ export interface Continent {
   /**
    * Kare görsel (1080x1080) - Kart, grid kullanımı için (zorunlu)
    */
-  image1x1: string | Media;
+  image1x1?: (string | null) | Media;
   /**
    * Dikey görsel (1080x2160) - Mobile, story kullanımı için
    */
@@ -894,10 +875,6 @@ export interface Continent {
    * Kıta için ikon
    */
   icon?: (string | null) | Media;
-  /**
-   * Kıta için tema rengi (hex kod)
-   */
-  color?: string | null;
   /**
    * URL için benzersiz kimlik
    */
@@ -910,14 +887,6 @@ export interface Continent {
    * Aktif kıtalar sistemde kullanılabilir
    */
   isActive?: boolean | null;
-  /**
-   * Bu kıtadaki ülke sayısı (otomatik hesaplanır)
-   */
-  countryCount?: number | null;
-  /**
-   * Sadece yöneticiler için notlar (kullanıcılara görünmez)
-   */
-  adminNotes?: string | null;
   /**
    * Arama motorlarında görünecek başlık (60 karakter)
    */
@@ -935,10 +904,6 @@ export interface Continent {
         id?: string | null;
       }[]
     | null;
-  /**
-   * Sosyal medyada paylaşılırken kullanılacak görsel
-   */
-  seoImage?: (string | null) | Media;
   updatedAt: string;
   createdAt: string;
 }
@@ -989,7 +954,7 @@ export interface Country {
   /**
    * Kare görsel (1080x1080) - Kart, grid kullanımı için (zorunlu)
    */
-  image1x1: string | Media;
+  image1x1?: (string | null) | Media;
   /**
    * Dikey görsel (1080x2160) - Mobile, story kullanımı için
    */
@@ -1003,20 +968,6 @@ export interface Country {
    */
   icon?: (string | null) | Media;
   /**
-   * Ülke için tema rengi (hex kod)
-   */
-  color?: string | null;
-  /**
-   * Ülke ile ilgili görseller
-   */
-  gallery?:
-    | {
-        image: string | Media;
-        caption?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  /**
    * URL için benzersiz kimlik
    */
   slug?: string | null;
@@ -1028,18 +979,6 @@ export interface Country {
    * Aktif ülkeler sistemde kullanılabilir
    */
   isActive?: boolean | null;
-  /**
-   * Bu ülke bağımsız bir devlet mi?
-   */
-  isIndependent?: boolean | null;
-  /**
-   * Bu ülkedeki bölge sayısı (otomatik hesaplanır)
-   */
-  regionCount?: number | null;
-  /**
-   * Sadece yöneticiler için notlar (kullanıcılara görünmez)
-   */
-  adminNotes?: string | null;
   /**
    * Arama motorlarında görünecek başlık (60 karakter)
    */
@@ -1057,10 +996,6 @@ export interface Country {
         id?: string | null;
       }[]
     | null;
-  /**
-   * Sosyal medyada paylaşılırken kullanılacak görsel
-   */
-  seoImage?: (string | null) | Media;
   updatedAt: string;
   createdAt: string;
 }
@@ -1101,30 +1036,13 @@ export interface Region {
     [k: string]: unknown;
   } | null;
   /**
-   * Bölgenin merkez şehri (varsa)
-   */
-  capital?: string | null;
-  /**
-   * Bölgenin karakteristik özellikleri
-   */
-  characteristics?:
-    | {
-        characteristic?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Bölgenin hakim iklim türü
-   */
-  climate?: ('mediterranean' | 'continental' | 'oceanic' | 'tropical' | 'desert' | 'polar') | null;
-  /**
    * Yatay görsel (1920x1080) - Hero, banner kullanımı için
    */
   image16x9?: (string | null) | Media;
   /**
    * Kare görsel (1080x1080) - Kart, grid kullanımı için (zorunlu)
    */
-  image1x1: string | Media;
+  image1x1?: (string | null) | Media;
   /**
    * Dikey görsel (1080x2160) - Mobile, story kullanımı için
    */
@@ -1133,20 +1051,6 @@ export interface Region {
    * Bölge için ikon
    */
   icon?: (string | null) | Media;
-  /**
-   * Bölge için tema rengi (hex kod)
-   */
-  color?: string | null;
-  /**
-   * Bölge ile ilgili ek görseller
-   */
-  gallery?:
-    | {
-        image: string | Media;
-        caption?: string | null;
-        id?: string | null;
-      }[]
-    | null;
   /**
    * URL için benzersiz kimlik
    */
@@ -1159,22 +1063,6 @@ export interface Region {
    * Aktif bölgeler sistemde kullanılabilir
    */
   isActive?: boolean | null;
-  /**
-   * Bu bölge popüler bir turist destinasyonu mu?
-   */
-  isTouristDestination?: boolean | null;
-  /**
-   * Bu bölgedeki şehir sayısı (otomatik hesaplanır)
-   */
-  cityCount?: number | null;
-  /**
-   * Bölgenin ana ekonomik faaliyeti
-   */
-  economicActivity?: ('agriculture' | 'tourism' | 'industry' | 'services' | 'fishing' | 'mining') | null;
-  /**
-   * Sadece yöneticiler için notlar (kullanıcılara görünmez)
-   */
-  adminNotes?: string | null;
   /**
    * Arama motorlarında görünecek başlık (60 karakter)
    */
@@ -1192,10 +1080,6 @@ export interface Region {
         id?: string | null;
       }[]
     | null;
-  /**
-   * Sosyal medyada paylaşılırken kullanılacak görsel
-   */
-  seoImage?: (string | null) | Media;
   updatedAt: string;
   createdAt: string;
 }
@@ -1210,17 +1094,13 @@ export interface City {
    */
   name: string;
   /**
-   * Bu şehrin ait olduğu ülke
+   * Şehrin hakkında açıklama
    */
-  country: string | Country;
-  /**
-   * Bu şehrin ait olduğu bölge (opsiyonel)
-   */
-  region?: (string | null) | Region;
+  description?: string | null;
   /**
    * Bu şehir hakkında detaylı bilgiler
    */
-  description?: {
+  content?: {
     root: {
       type: string;
       children: {
@@ -1236,44 +1116,34 @@ export interface City {
     [k: string]: unknown;
   } | null;
   /**
-   * Şehrin GPS koordinatları
+   * Bu şehrin ait olduğu kıta
    */
-  coordinates?: {
-    latitude?: number | null;
-    longitude?: number | null;
+  continent?: (string | null) | Continent;
+  /**
+   * Bu şehrin ait olduğu ülke
+   */
+  country?: (string | null) | Country;
+  /**
+   * Bu şehrin ait olduğu bölge (opsiyonel)
+   */
+  region?: (string | null) | Region;
+  latitude?: number | null;
+  longitude?: number | null;
+  jpg?: {
+    ratio16x9?: (string | null) | Media;
+    ratio1x1?: (string | null) | Media;
+    ratio9x16?: (string | null) | Media;
   };
-  /**
-   * Yatay görsel (1920x1080) - Hero, banner kullanımı için
-   */
-  image16x9?: (string | null) | Media;
-  /**
-   * Kare görsel (1080x1080) - Kart, grid kullanımı için (zorunlu)
-   */
-  image1x1: string | Media;
-  /**
-   * Dikey görsel (1080x2160) - Mobile, story kullanımı için
-   */
-  image1x2?: (string | null) | Media;
-  /**
-   * Şehrin silüet/panorama görseli
-   */
-  skylineImage?: (string | null) | Media;
-  /**
-   * Şehir için ikon
-   */
-  icon?: (string | null) | Media;
-  /**
-   * Şehir için tema rengi (hex kod)
-   */
-  color?: string | null;
-  /**
-   * Şehir ile ilgili ek görseller
-   */
+  png?: {
+    ratio16x9?: (string | null) | Media;
+    ratio1x1?: (string | null) | Media;
+    ratio9x16?: (string | null) | Media;
+  };
   gallery?:
     | {
+        title?: string | null;
+        description?: string | null;
         image: string | Media;
-        caption?: string | null;
-        location?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -1286,52 +1156,26 @@ export interface City {
    */
   sortOrder?: number | null;
   /**
-   * Aktif şehirler sistemde kullanılabilir
+   * Şehirler sistemde kullanılabilir
    */
   isActive?: boolean | null;
   /**
-   * Bu şehir ülkenin başkenti mi?
+   * Meta başlık (60 karakter)
    */
-  isCapital?: boolean | null;
+  metaTitle?: string | null;
   /**
-   * Bu şehir büyük bir metropol mü?
+   * Meta açıklama (160 karakter)
    */
-  isMajorCity?: boolean | null;
+  metaDescription?: string | null;
   /**
-   * Bu şehir popüler bir turist destinasyonu mu?
+   * Meta anahtar kelimeler
    */
-  isTouristDestination?: boolean | null;
-  /**
-   * Şehrin ana ekonomik faaliyeti
-   */
-  economicActivity?:
-    | ('commerce' | 'tourism' | 'industry' | 'services' | 'agriculture' | 'fishing' | 'technology' | 'finance')
-    | null;
-  /**
-   * Sadece yöneticiler için notlar (kullanıcılara görünmez)
-   */
-  adminNotes?: string | null;
-  /**
-   * Arama motorlarında görünecek başlık (60 karakter)
-   */
-  seoTitle?: string | null;
-  /**
-   * Arama motorlarında görünecek açıklama (160 karakter)
-   */
-  seoDescription?: string | null;
-  /**
-   * Arama motorları için anahtar kelimeler
-   */
-  seoKeywords?:
+  metaKeywords?:
     | {
         keyword?: string | null;
         id?: string | null;
       }[]
     | null;
-  /**
-   * Sosyal medyada paylaşılırken kullanılacak görsel
-   */
-  seoImage?: (string | null) | Media;
   updatedAt: string;
   createdAt: string;
 }
@@ -1418,16 +1262,6 @@ export interface CookingMethod {
    */
   instructionalVideo?: string | null;
   /**
-   * Pişirme yöntemi ile ilgili ek görseller
-   */
-  gallery?:
-    | {
-        image: string | Media;
-        caption?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  /**
    * URL için benzersiz kimlik
    */
   slug?: string | null;
@@ -1448,10 +1282,6 @@ export interface CookingMethod {
    */
   difficultyRequired?: (string | null) | DifficultyLevel;
   /**
-   * Sadece yöneticiler için notlar (kullanıcılara görünmez)
-   */
-  adminNotes?: string | null;
-  /**
    * Arama motorlarında görünecek başlık (60 karakter)
    */
   seoTitle?: string | null;
@@ -1468,10 +1298,6 @@ export interface CookingMethod {
         id?: string | null;
       }[]
     | null;
-  /**
-   * Sosyal medyada paylaşılırken kullanılacak görsel
-   */
-  seoImage?: (string | null) | Media;
   updatedAt: string;
   createdAt: string;
 }
@@ -1572,23 +1398,9 @@ export interface Season {
    */
   icon?: (string | null) | Media;
   /**
-   * Mevsim için tema rengi (hex kod)
-   */
-  color?: string | null;
-  /**
    * Mevsim sayfası için arkaplan görseli
    */
   backgroundImage?: (string | null) | Media;
-  /**
-   * Mevsim ile ilgili ek görseller
-   */
-  gallery?:
-    | {
-        image: string | Media;
-        caption?: string | null;
-        id?: string | null;
-      }[]
-    | null;
   /**
    * URL için benzersiz kimlik
    */
@@ -1613,10 +1425,6 @@ export interface Season {
     max?: number | null;
   };
   /**
-   * Sadece yöneticiler için notlar (kullanıcılara görünmez)
-   */
-  adminNotes?: string | null;
-  /**
    * Arama motorlarında görünecek başlık (60 karakter)
    */
   seoTitle?: string | null;
@@ -1633,10 +1441,6 @@ export interface Season {
         id?: string | null;
       }[]
     | null;
-  /**
-   * Sosyal medyada paylaşılırken kullanılacak görsel
-   */
-  seoImage?: (string | null) | Media;
   updatedAt: string;
   createdAt: string;
 }
@@ -1718,20 +1522,6 @@ export interface DietaryType {
    */
   icon?: (string | null) | Media;
   /**
-   * UI'da kullanılacak renk (hex kod)
-   */
-  color?: string | null;
-  /**
-   * Diyet türü ile ilgili ek görseller
-   */
-  gallery?:
-    | {
-        image: string | Media;
-        caption?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  /**
    * URL için benzersiz kimlik
    */
   slug?: string | null;
@@ -1747,10 +1537,6 @@ export interface DietaryType {
    * Ana sayfada öne çıkarılsın mı?
    */
   isFeatured?: boolean | null;
-  /**
-   * Sadece yöneticiler için notlar (kullanıcılara görünmez)
-   */
-  adminNotes?: string | null;
   /**
    * Arama motorlarında görünecek başlık (60 karakter)
    */
@@ -1768,10 +1554,6 @@ export interface DietaryType {
         id?: string | null;
       }[]
     | null;
-  /**
-   * Sosyal medyada paylaşılırken kullanılacak görsel
-   */
-  seoImage?: (string | null) | Media;
   updatedAt: string;
   createdAt: string;
 }
@@ -1789,6 +1571,24 @@ export interface Ingredient {
    * Bu malzeme hakkında detaylı açıklama
    */
   description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Bu malzeme hakkında detaylı açıklama
+   */
+  content?: {
     root: {
       type: string;
       children: {
@@ -1840,7 +1640,7 @@ export interface Ingredient {
   /**
    * Kare görsel (1080x1080) - Kart, grid kullanımı için (zorunlu)
    */
-  image1x1: string | Media;
+  image1x1?: (string | null) | Media;
   /**
    * Dikey görsel (1080x2160) - Mobile, story kullanımı için
    */
@@ -1849,20 +1649,6 @@ export interface Ingredient {
    * Malzeme için küçük ikon (menülerde kullanılır)
    */
   icon?: (string | null) | Media;
-  /**
-   * Malzeme için tema rengi (hex kod)
-   */
-  color?: string | null;
-  /**
-   * Malzeme ile ilgili ek görseller
-   */
-  gallery?:
-    | {
-        image: string | Media;
-        caption?: string | null;
-        id?: string | null;
-      }[]
-    | null;
   /**
    * URL için benzersiz kimlik
    */
@@ -1888,10 +1674,6 @@ export interface Ingredient {
    */
   availability?: ('common' | 'moderate' | 'rare' | 'imported') | null;
   /**
-   * Sadece yöneticiler için notlar (kullanıcılara görünmez)
-   */
-  adminNotes?: string | null;
-  /**
    * Arama motorlarında görünecek başlık (60 karakter)
    */
   seoTitle?: string | null;
@@ -1908,10 +1690,6 @@ export interface Ingredient {
         id?: string | null;
       }[]
     | null;
-  /**
-   * Sosyal medyada paylaşılırken kullanılacak görsel
-   */
-  seoImage?: (string | null) | Media;
   updatedAt: string;
   createdAt: string;
 }
@@ -2001,20 +1779,6 @@ export interface IngredientCategory {
    */
   icon?: (string | null) | Media;
   /**
-   * Kategori için tema rengi (hex kod)
-   */
-  color?: string | null;
-  /**
-   * Kategori ile ilgili ek görseller
-   */
-  gallery?:
-    | {
-        image: string | Media;
-        caption?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  /**
    * URL için benzersiz kimlik
    */
   slug?: string | null;
@@ -2030,10 +1794,6 @@ export interface IngredientCategory {
    * Ana sayfada öne çıkarılsın mı?
    */
   isFeatured?: boolean | null;
-  /**
-   * Sadece yöneticiler için notlar (kullanıcılara görünmez)
-   */
-  adminNotes?: string | null;
   /**
    * Arama motorlarında görünecek başlık (60 karakter)
    */
@@ -2051,10 +1811,6 @@ export interface IngredientCategory {
         id?: string | null;
       }[]
     | null;
-  /**
-   * Sosyal medyada paylaşılırken kullanılacak görsel
-   */
-  seoImage?: (string | null) | Media;
   updatedAt: string;
   createdAt: string;
 }
@@ -2105,10 +1861,6 @@ export interface IngredientUnit {
    */
   isPrecise?: boolean | null;
   /**
-   * Sadece yöneticiler için notlar (kullanıcılara görünmez)
-   */
-  adminNotes?: string | null;
-  /**
    * Arama motorlarında görünecek başlık (60 karakter)
    */
   seoTitle?: string | null;
@@ -2125,10 +1877,6 @@ export interface IngredientUnit {
         id?: string | null;
       }[]
     | null;
-  /**
-   * Sosyal medyada paylaşılırken kullanılacak görsel
-   */
-  seoImage?: (string | null) | Media;
   updatedAt: string;
   createdAt: string;
 }
@@ -2289,7 +2037,60 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
-  sizes?: T | {};
+  sizes?:
+    | T
+    | {
+        large?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        medium?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        small?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        xsmall?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        xxsmall?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+      };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2299,24 +2100,23 @@ export interface CategoriesSelect<T extends boolean = true> {
   name?: T;
   description?: T;
   parent?: T;
-  image16x9?: T;
-  image1x1?: T;
-  image1x2?: T;
-  icon?: T;
-  color?: T;
-  gallery?:
+  JPG?:
     | T
     | {
-        image?: T;
-        caption?: T;
-        id?: T;
+        jpg16x9?: T;
+        jpg1x1?: T;
+        jpg1x2?: T;
+      };
+  PNG?:
+    | T
+    | {
+        png16x9?: T;
+        png1x1?: T;
+        png1x2?: T;
       };
   slug?: T;
   sortOrder?: T;
   isActive?: T;
-  isFeatured?: T;
-  recipeCount?: T;
-  adminNotes?: T;
   seoTitle?: T;
   seoDescription?: T;
   seoKeywords?:
@@ -2325,7 +2125,6 @@ export interface CategoriesSelect<T extends boolean = true> {
         keyword?: T;
         id?: T;
       };
-  seoImage?: T;
   canonicalUrl?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -2413,7 +2212,6 @@ export interface RecipesSelect<T extends boolean = true> {
         keyword?: T;
         id?: T;
       };
-  seoImage?: T;
   slug?: T;
   status?: T;
   featured?: T;
@@ -2433,6 +2231,7 @@ export interface RecipesSelect<T extends boolean = true> {
 export interface IngredientsSelect<T extends boolean = true> {
   name?: T;
   description?: T;
+  content?: T;
   category?: T;
   defaultUnit?: T;
   seasons?: T;
@@ -2441,21 +2240,12 @@ export interface IngredientsSelect<T extends boolean = true> {
   image1x1?: T;
   image1x2?: T;
   icon?: T;
-  color?: T;
-  gallery?:
-    | T
-    | {
-        image?: T;
-        caption?: T;
-        id?: T;
-      };
   slug?: T;
   sortOrder?: T;
   isActive?: T;
   isOrganic?: T;
   avgPrice?: T;
   availability?: T;
-  adminNotes?: T;
   seoTitle?: T;
   seoDescription?: T;
   seoKeywords?:
@@ -2464,7 +2254,6 @@ export interface IngredientsSelect<T extends boolean = true> {
         keyword?: T;
         id?: T;
       };
-  seoImage?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2483,7 +2272,6 @@ export interface IngredientUnitsSelect<T extends boolean = true> {
   sortOrder?: T;
   isActive?: T;
   isPrecise?: T;
-  adminNotes?: T;
   seoTitle?: T;
   seoDescription?: T;
   seoKeywords?:
@@ -2492,7 +2280,6 @@ export interface IngredientUnitsSelect<T extends boolean = true> {
         keyword?: T;
         id?: T;
       };
-  seoImage?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2521,19 +2308,11 @@ export interface CookingMethodsSelect<T extends boolean = true> {
   featuredImage?: T;
   icon?: T;
   instructionalVideo?: T;
-  gallery?:
-    | T
-    | {
-        image?: T;
-        caption?: T;
-        id?: T;
-      };
   slug?: T;
   sortOrder?: T;
   isActive?: T;
   isFeatured?: T;
   difficultyRequired?: T;
-  adminNotes?: T;
   seoTitle?: T;
   seoDescription?: T;
   seoKeywords?:
@@ -2542,7 +2321,6 @@ export interface CookingMethodsSelect<T extends boolean = true> {
         keyword?: T;
         id?: T;
       };
-  seoImage?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2587,19 +2365,10 @@ export interface CuisinesSelect<T extends boolean = true> {
   image1x2?: T;
   icon?: T;
   flag?: T;
-  color?: T;
-  gallery?:
-    | T
-    | {
-        image?: T;
-        caption?: T;
-        id?: T;
-      };
   slug?: T;
   sortOrder?: T;
   isActive?: T;
   isFeatured?: T;
-  adminNotes?: T;
   seoTitle?: T;
   seoDescription?: T;
   seoKeywords?:
@@ -2608,7 +2377,6 @@ export interface CuisinesSelect<T extends boolean = true> {
         keyword?: T;
         id?: T;
       };
-  seoImage?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2635,13 +2403,11 @@ export interface DifficultyLevelsSelect<T extends boolean = true> {
       };
   featuredImage?: T;
   icon?: T;
-  color?: T;
   badge?: T;
   sortOrder?: T;
   isActive?: T;
   isVisible?: T;
   recommendedFor?: T;
-  adminNotes?: T;
   seoTitle?: T;
   seoDescription?: T;
   seoKeywords?:
@@ -2650,7 +2416,6 @@ export interface DifficultyLevelsSelect<T extends boolean = true> {
         keyword?: T;
         id?: T;
       };
-  seoImage?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2682,15 +2447,7 @@ export interface SeasonsSelect<T extends boolean = true> {
   cookingTips?: T;
   featuredImage?: T;
   icon?: T;
-  color?: T;
   backgroundImage?: T;
-  gallery?:
-    | T
-    | {
-        image?: T;
-        caption?: T;
-        id?: T;
-      };
   slug?: T;
   sortOrder?: T;
   isActive?: T;
@@ -2701,7 +2458,6 @@ export interface SeasonsSelect<T extends boolean = true> {
         min?: T;
         max?: T;
       };
-  adminNotes?: T;
   seoTitle?: T;
   seoDescription?: T;
   seoKeywords?:
@@ -2710,7 +2466,6 @@ export interface SeasonsSelect<T extends boolean = true> {
         keyword?: T;
         id?: T;
       };
-  seoImage?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2744,19 +2499,10 @@ export interface DietaryTypesSelect<T extends boolean = true> {
   isAllergyBased?: T;
   featuredImage?: T;
   icon?: T;
-  color?: T;
-  gallery?:
-    | T
-    | {
-        image?: T;
-        caption?: T;
-        id?: T;
-      };
   slug?: T;
   sortOrder?: T;
   isActive?: T;
   isFeatured?: T;
-  adminNotes?: T;
   seoTitle?: T;
   seoDescription?: T;
   seoKeywords?:
@@ -2765,7 +2511,6 @@ export interface DietaryTypesSelect<T extends boolean = true> {
         keyword?: T;
         id?: T;
       };
-  seoImage?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2787,19 +2532,10 @@ export interface IngredientCategoriesSelect<T extends boolean = true> {
       };
   featuredImage?: T;
   icon?: T;
-  color?: T;
-  gallery?:
-    | T
-    | {
-        image?: T;
-        caption?: T;
-        id?: T;
-      };
   slug?: T;
   sortOrder?: T;
   isActive?: T;
   isFeatured?: T;
-  adminNotes?: T;
   seoTitle?: T;
   seoDescription?: T;
   seoKeywords?:
@@ -2808,7 +2544,6 @@ export interface IngredientCategoriesSelect<T extends boolean = true> {
         keyword?: T;
         id?: T;
       };
-  seoImage?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2824,12 +2559,9 @@ export interface ContinentsSelect<T extends boolean = true> {
   image1x1?: T;
   image1x2?: T;
   icon?: T;
-  color?: T;
   slug?: T;
   sortOrder?: T;
   isActive?: T;
-  countryCount?: T;
-  adminNotes?: T;
   seoTitle?: T;
   seoDescription?: T;
   seoKeywords?:
@@ -2838,7 +2570,6 @@ export interface ContinentsSelect<T extends boolean = true> {
         keyword?: T;
         id?: T;
       };
-  seoImage?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2857,20 +2588,9 @@ export interface CountriesSelect<T extends boolean = true> {
   image1x2?: T;
   flag?: T;
   icon?: T;
-  color?: T;
-  gallery?:
-    | T
-    | {
-        image?: T;
-        caption?: T;
-        id?: T;
-      };
   slug?: T;
   sortOrder?: T;
   isActive?: T;
-  isIndependent?: T;
-  regionCount?: T;
-  adminNotes?: T;
   seoTitle?: T;
   seoDescription?: T;
   seoKeywords?:
@@ -2879,7 +2599,6 @@ export interface CountriesSelect<T extends boolean = true> {
         keyword?: T;
         id?: T;
       };
-  seoImage?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2892,33 +2611,13 @@ export interface RegionsSelect<T extends boolean = true> {
   country?: T;
   type?: T;
   description?: T;
-  capital?: T;
-  characteristics?:
-    | T
-    | {
-        characteristic?: T;
-        id?: T;
-      };
-  climate?: T;
   image16x9?: T;
   image1x1?: T;
   image1x2?: T;
   icon?: T;
-  color?: T;
-  gallery?:
-    | T
-    | {
-        image?: T;
-        caption?: T;
-        id?: T;
-      };
   slug?: T;
   sortOrder?: T;
   isActive?: T;
-  isTouristDestination?: T;
-  cityCount?: T;
-  economicActivity?: T;
-  adminNotes?: T;
   seoTitle?: T;
   seoDescription?: T;
   seoKeywords?:
@@ -2927,7 +2626,6 @@ export interface RegionsSelect<T extends boolean = true> {
         keyword?: T;
         id?: T;
       };
-  seoImage?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2937,46 +2635,46 @@ export interface RegionsSelect<T extends boolean = true> {
  */
 export interface CitiesSelect<T extends boolean = true> {
   name?: T;
+  description?: T;
+  content?: T;
+  continent?: T;
   country?: T;
   region?: T;
-  description?: T;
-  coordinates?:
+  latitude?: T;
+  longitude?: T;
+  jpg?:
     | T
     | {
-        latitude?: T;
-        longitude?: T;
+        ratio16x9?: T;
+        ratio1x1?: T;
+        ratio9x16?: T;
       };
-  image16x9?: T;
-  image1x1?: T;
-  image1x2?: T;
-  skylineImage?: T;
-  icon?: T;
-  color?: T;
+  png?:
+    | T
+    | {
+        ratio16x9?: T;
+        ratio1x1?: T;
+        ratio9x16?: T;
+      };
   gallery?:
     | T
     | {
+        title?: T;
+        description?: T;
         image?: T;
-        caption?: T;
-        location?: T;
         id?: T;
       };
   slug?: T;
   sortOrder?: T;
   isActive?: T;
-  isCapital?: T;
-  isMajorCity?: T;
-  isTouristDestination?: T;
-  economicActivity?: T;
-  adminNotes?: T;
-  seoTitle?: T;
-  seoDescription?: T;
-  seoKeywords?:
+  metaTitle?: T;
+  metaDescription?: T;
+  metaKeywords?:
     | T
     | {
         keyword?: T;
         id?: T;
       };
-  seoImage?: T;
   updatedAt?: T;
   createdAt?: T;
 }

@@ -60,15 +60,6 @@ export const Regions: CollectionConfig = {
                 description: 'Bu bölge hakkında detaylı bilgiler',
               },
             },
-            {
-              name: 'capital',
-              label: 'Merkez Şehir',
-              type: 'text',
-              admin: {
-                placeholder: 'İzmir, Floransa, Sevilla',
-                description: 'Bölgenin merkez şehri (varsa)',
-              },
-            },
           ],
         },
         {
@@ -162,40 +153,6 @@ export const Regions: CollectionConfig = {
                 description: 'Aktif bölgeler sistemde kullanılabilir',
               },
             },
-            {
-              name: 'isTouristDestination',
-              label: 'Turist Bölgesi',
-              type: 'checkbox',
-              defaultValue: false,
-              admin: {
-                description: 'Bu bölge popüler bir turist destinasyonu mu?',
-              },
-            },
-            {
-              name: 'cityCount',
-              label: 'Şehir Sayısı',
-              type: 'number',
-              admin: {
-                readOnly: true,
-                description: 'Bu bölgedeki şehir sayısı (otomatik hesaplanır)',
-              },
-            },
-            {
-              name: 'economicActivity',
-              label: 'Ana Ekonomik Faaliyet',
-              type: 'select',
-              options: [
-                { label: 'Tarım', value: 'agriculture' },
-                { label: 'Turizm', value: 'tourism' },
-                { label: 'Sanayi', value: 'industry' },
-                { label: 'Hizmet', value: 'services' },
-                { label: 'Balıkçılık', value: 'fishing' },
-                { label: 'Madencilik', value: 'mining' },
-              ],
-              admin: {
-                description: 'Bölgenin ana ekonomik faaliyeti',
-              },
-            },
           ],
         },
         {
@@ -236,15 +193,6 @@ export const Regions: CollectionConfig = {
               ],
               admin: {
                 description: 'Arama motorları için anahtar kelimeler',
-              },
-            },
-            {
-              name: 'seoImage',
-              label: 'SEO Görseli',
-              type: 'upload',
-              relationTo: 'media',
-              admin: {
-                description: 'Sosyal medyada paylaşılırken kullanılacak görsel',
               },
             },
           ],

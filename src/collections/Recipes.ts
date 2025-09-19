@@ -597,15 +597,6 @@ export const Recipes: CollectionConfig = {
                 description: 'Arama motorları için anahtar kelimeler',
               },
             },
-            {
-              name: 'seoImage',
-              label: 'SEO Görseli',
-              type: 'upload',
-              relationTo: 'media',
-              admin: {
-                description: 'Sosyal medyada paylaşılırken kullanılacak görsel',
-              },
-            },
           ],
         },
         {

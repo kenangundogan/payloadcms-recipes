@@ -30,7 +30,6 @@ export const Media: CollectionConfig = {
         width: 1280,
         position: 'centre',
         generateImageName: ({ originalName, sizeName, extension }) => {
-          // xlarge'ı kaldır ve sadece size name'i ekle
           const baseName = originalName.replace('-xlarge', '')
           return `${baseName}-${sizeName}.${extension}`
         },
@@ -40,7 +39,6 @@ export const Media: CollectionConfig = {
         width: 960,
         position: 'centre',
         generateImageName: ({ originalName, sizeName, extension }) => {
-          // xlarge'ı kaldır ve sadece size name'i ekle
           const baseName = originalName.replace('-xlarge', '')
           return `${baseName}-${sizeName}.${extension}`
         },
@@ -50,7 +48,6 @@ export const Media: CollectionConfig = {
         width: 640,
         position: 'centre',
         generateImageName: ({ originalName, sizeName, extension }) => {
-          // xlarge'ı kaldır ve sadece size name'i ekle
           const baseName = originalName.replace('-xlarge', '')
           return `${baseName}-${sizeName}.${extension}`
         },
@@ -60,7 +57,6 @@ export const Media: CollectionConfig = {
         width: 400,
         position: 'centre',
         generateImageName: ({ originalName, sizeName, extension }) => {
-          // xlarge'ı kaldır ve sadece size name'i ekle
           const baseName = originalName.replace('-xlarge', '')
           return `${baseName}-${sizeName}.${extension}`
         },
@@ -70,7 +66,6 @@ export const Media: CollectionConfig = {
         width: 200,
         position: 'centre',
         generateImageName: ({ originalName, sizeName, extension }) => {
-          // xlarge'ı kaldır ve sadece size name'i ekle
           const baseName = originalName.replace('-xlarge', '')
           return `${baseName}-${sizeName}.${extension}`
         },

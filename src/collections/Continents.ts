@@ -141,15 +141,6 @@ export const Continents: CollectionConfig = {
                 description: 'Aktif kıtalar sistemde kullanılabilir',
               },
             },
-            {
-              name: 'countryCount',
-              label: 'Ülke Sayısı',
-              type: 'number',
-              admin: {
-                readOnly: true,
-                description: 'Bu kıtadaki ülke sayısı (otomatik hesaplanır)',
-              },
-            },
           ],
         },
         {
@@ -190,15 +181,6 @@ export const Continents: CollectionConfig = {
               ],
               admin: {
                 description: 'Arama motorları için anahtar kelimeler',
-              },
-            },
-            {
-              name: 'seoImage',
-              label: 'SEO Görseli',
-              type: 'upload',
-              relationTo: 'media',
-              admin: {
-                description: 'Sosyal medyada paylaşılırken kullanılacak görsel',
               },
             },
           ],

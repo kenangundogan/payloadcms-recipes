@@ -28,11 +28,37 @@ export const Cities: CollectionConfig = {
               },
             },
             {
+              name: 'description',
+              label: 'Açıklama',
+              type: 'textarea',
+              maxLength: 500,
+              admin: {
+                placeholder: 'Bu şehir hakkında kısa bir açıklama',
+                description: 'Şehrin hakkında açıklama',
+              },
+            },
+            {
+              name: 'content',
+              label: 'İçerik',
+              type: 'richText',
+              admin: {
+                description: 'Bu şehir hakkında detaylı bilgiler',
+              },
+            },
+            {
+              name: 'continent',
+              label: 'Kıta',
+              type: 'relationship',
+              relationTo: 'continents',
+              admin: {
+                description: 'Bu şehrin ait olduğu kıta',
+              },
+            },
+            {
               name: 'country',
               label: 'Ülke',
               type: 'relationship',
               relationTo: 'countries',
-              required: true,
               admin: {
                 description: 'Bu şehrin ait olduğu ülke',
               },
@@ -44,14 +70,6 @@ export const Cities: CollectionConfig = {
               relationTo: 'regions',
               admin: {
                 description: 'Bu şehrin ait olduğu bölge (opsiyonel)',
-              },
-            },
-            {
-              name: 'description',
-              label: 'Açıklama',
-              type: 'richText',
-              admin: {
-                description: 'Bu şehir hakkında detaylı bilgiler',
               },
             },
           ],
@@ -78,34 +96,57 @@ export const Cities: CollectionConfig = {
           ],
         },
         {
-          label: 'Media',
+          label: 'Images',
           fields: [
             {
-              name: 'image16x9',
-              label: '16:9 Görsel',
-              type: 'upload',
-              relationTo: 'media',
-              admin: {
-                description: 'Yatay görsel (1920x1080) - Hero, banner kullanımı için',
-              },
+              name: 'jpg',
+              label: 'JPG',
+              type: 'group',
+              fields: [
+                {
+                  name: 'ratio16x9',
+                  label: 'Yatay (16:9 - 1920x1080 - JPG)',
+                  type: 'upload',
+                  relationTo: 'media',
+                },
+                {
+                  name: 'ratio1x1',
+                  label: 'Kare (1:1 - 1920x1920 - JPG)',
+                  type: 'upload',
+                  relationTo: 'media',
+                },
+                {
+                  name: 'ratio9x16',
+                  label: 'Dikey (1:2 - 1920x3413 - JPG)',
+                  type: 'upload',
+                  relationTo: 'media',
+                },
+              ],
             },
             {
-              name: 'image1x1',
-              label: '1:1 Görsel',
-              type: 'upload',
-              relationTo: 'media',
-              admin: {
-                description: 'Kare görsel (1080x1080) - Kart, grid kullanımı için (zorunlu)',
-              },
-            },
-            {
-              name: 'image1x2',
-              label: '1:2 Görsel',
-              type: 'upload',
-              relationTo: 'media',
-              admin: {
-                description: 'Dikey görsel (1080x2160) - Mobile, story kullanımı için',
-              },
+              name: 'png',
+              label: 'PNG',
+              type: 'group',
+              fields: [
+                {
+                  name: 'ratio16x9',
+                  label: 'Yatay (16:9 - 1920x1080 - PNG)',
+                  type: 'upload',
+                  relationTo: 'media',
+                },
+                {
+                  name: 'ratio1x1',
+                  label: 'Kare (1:1 - 1920x1920 - PNG)',
+                  type: 'upload',
+                  relationTo: 'media',
+                },
+                {
+                  name: 'ratio9x16',
+                  label: 'Dikey (1:2 - 1920x3413 - PNG)',
+                  type: 'upload',
+                  relationTo: 'media',
+                },
+              ],
             },
           ],
         },
@@ -118,18 +159,26 @@ export const Cities: CollectionConfig = {
               type: 'array',
               fields: [
                 {
+                  name: 'title',
+                  label: 'Başlık',
+                  type: 'text',
+                  admin: {
+                    placeholder: 'Bu görselin başlığı',
+                  },
+                },
+                {
+                  name: 'description',
+                  label: 'Açıklama',
+                  type: 'textarea',
+                  admin: {
+                    placeholder: 'Bu görselinin açıklaması',
+                  },
+                },
+                {
                   name: 'image',
                   type: 'upload',
                   relationTo: 'media',
                   required: true,
-                },
-                {
-                  name: 'caption',
-                  label: 'Açıklama',
-                  type: 'text',
-                  admin: {
-                    placeholder: 'Bu görselin açıklaması',
-                  },
                 },
               ],
             },
@@ -145,6 +194,7 @@ export const Cities: CollectionConfig = {
               unique: true,
               admin: {
                 description: 'URL için benzersiz kimlik',
+                readOnly: true,
               },
               hooks: {
                 beforeValidate: [
@@ -178,60 +228,42 @@ export const Cities: CollectionConfig = {
             },
             {
               name: 'isActive',
-              label: 'Aktif',
+              label: 'Status',
               type: 'checkbox',
               defaultValue: true,
               admin: {
-                description: 'Aktif şehirler sistemde kullanılabilir',
-              },
-            },
-            {
-              name: 'isCapital',
-              label: 'Başkent mi?',
-              type: 'checkbox',
-              defaultValue: false,
-              admin: {
-                description: 'Bu şehir ülkenin başkenti mi?',
-              },
-            },
-            {
-              name: 'isMajorCity',
-              label: 'Büyük Şehir',
-              type: 'checkbox',
-              defaultValue: false,
-              admin: {
-                description: 'Bu şehir büyük bir metropol mü?',
+                description: 'Şehirler sistemde kullanılabilir',
               },
             },
           ],
         },
         {
-          label: 'SEO',
+          label: 'Meta',
           fields: [
             {
-              name: 'seoTitle',
-              label: 'SEO Başlık',
+              name: 'metaTitle',
+              label: 'Meta Başlık',
               type: 'text',
               maxLength: 60,
               admin: {
-                placeholder: 'İstanbul Yemekleri | Site Adı',
-                description: 'Arama motorlarında görünecek başlık (60 karakter)',
+                placeholder: 'İstanbul Yemekleri',
+                description: 'Meta başlık (60 karakter)',
               },
             },
             {
-              name: 'seoDescription',
-              label: 'SEO Açıklama',
+              name: 'metaDescription',
+              label: 'Meta Açıklama',
               type: 'textarea',
               maxLength: 160,
               admin: {
                 placeholder:
                   "İstanbul'un en lezzetli sokak lezzetleri ve geleneksel yemek tarifleri...",
-                description: 'Arama motorlarında görünecek açıklama (160 karakter)',
+                description: 'Meta açıklama (160 karakter)',
               },
             },
             {
-              name: 'seoKeywords',
-              label: 'SEO Anahtar Kelimeler',
+              name: 'metaKeywords',
+              label: 'Meta Anahtar Kelimeler',
               type: 'array',
               fields: [
                 {
@@ -243,16 +275,7 @@ export const Cities: CollectionConfig = {
                 },
               ],
               admin: {
-                description: 'Arama motorları için anahtar kelimeler',
-              },
-            },
-            {
-              name: 'seoImage',
-              label: 'SEO Görseli',
-              type: 'upload',
-              relationTo: 'media',
-              admin: {
-                description: 'Sosyal medyada paylaşılırken kullanılacak görsel',
+                description: 'Meta anahtar kelimeler',
               },
             },
           ],

@@ -170,24 +170,6 @@ export const Countries: CollectionConfig = {
                 description: 'Aktif ülkeler sistemde kullanılabilir',
               },
             },
-            {
-              name: 'isIndependent',
-              label: 'Bağımsız Ülke',
-              type: 'checkbox',
-              defaultValue: true,
-              admin: {
-                description: 'Bu ülke bağımsız bir devlet mi?',
-              },
-            },
-            {
-              name: 'regionCount',
-              label: 'Bölge Sayısı',
-              type: 'number',
-              admin: {
-                readOnly: true,
-                description: 'Bu ülkedeki bölge sayısı (otomatik hesaplanır)',
-              },
-            },
           ],
         },
         {
@@ -228,15 +210,6 @@ export const Countries: CollectionConfig = {
               ],
               admin: {
                 description: 'Arama motorları için anahtar kelimeler',
-              },
-            },
-            {
-              name: 'seoImage',
-              label: 'SEO Görseli',
-              type: 'upload',
-              relationTo: 'media',
-              admin: {
-                description: 'Sosyal medyada paylaşılırken kullanılacak görsel',
               },
             },
           ],

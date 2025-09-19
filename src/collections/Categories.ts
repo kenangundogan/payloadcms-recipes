@@ -206,15 +206,6 @@ export const Categories: CollectionConfig = {
               },
             },
             {
-              name: 'seoImage',
-              label: 'SEO Görseli',
-              type: 'upload',
-              relationTo: 'media',
-              admin: {
-                description: 'Sosyal medyada paylaşılırken kullanılacak görsel',
-              },
-            },
-            {
               name: 'canonicalUrl',
               label: 'Canonical URL',
               type: 'text',
